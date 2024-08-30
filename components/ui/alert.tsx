@@ -3,7 +3,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const alertVariants = cva(
-  "flex items-center w-[538px] p-2.5 border border-black border-solid rounded",
+  "flex flex-col justify-start items-start w-[538px] p-2.5 border border-black border-solid rounded box-border",
   {
     variants: {
       variant: {
@@ -17,30 +17,53 @@ const alertVariants = cva(
   }
 )
 
-const Alert = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & VariantProps<typeof alertVariants>
->(({ className, variant, ...props }, ref) => (
-  <div
-    ref={ref}
-    role="alert"
-    className={cn(alertVariants({ variant }), className)}
-    {...props}
-  />
-))
+export interface AlertProps
+  extends React.HTMLAttributes<HTMLDivElement>,
+    VariantProps<typeof alertVariants> {
+  icon?: React.ReactNode
+  onClose?: () => void
+}
+
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
+  ({ className, variant, icon, onClose, children, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        role="alert"
+        className={cn(alertVariants({ variant }), className)}
+        {...props}
+      >
+        <div className="flex flex-row justify-between items-start w-full">
+          <div className="flex flex-row items-start gap-2 flex-grow">
+            {icon && <div className="flex-shrink-0 text-lg">{icon}</div>}
+            <div className="flex-grow">{children}</div>
+          </div>
+          {onClose && (
+            <button
+              onClick={onClose}
+              className="text-sm leading-[130%] font-mabry-pro font-[400] underline cursor-pointer ml-2"
+            >
+              close
+            </button>
+          )}
+        </div>
+      </div>
+    )
+  }
+)
 Alert.displayName = "Alert"
 
-const AlertContent = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
+const AlertTitle = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
-  <div
+  <p
     ref={ref}
-    className={cn("flex-grow flex items-center gap-2", className)}
+    className={cn("text-sm leading-[130%] font-mabry-pro font-[400]", className)}
     {...props}
   />
 ))
-AlertContent.displayName = "AlertContent"
+AlertTitle.displayName = "AlertTitle"
 
 const AlertDescription = React.forwardRef<
   HTMLParagraphElement,
@@ -54,16 +77,28 @@ const AlertDescription = React.forwardRef<
 ))
 AlertDescription.displayName = "AlertDescription"
 
-const AlertClose = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
+const AlertActions = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <p
+  <div
     ref={ref}
-    className={cn("text-sm leading-[130%] font-mabry-pro font-[400] underline cursor-pointer", className)}
+    className={cn("flex flex-row justify-start items-start gap-2 w-full mt-3 pl-[26px]", className)}
     {...props}
   />
 ))
-AlertClose.displayName = "AlertClose"
+AlertActions.displayName = "AlertActions"
 
-export { Alert, AlertContent, AlertDescription, AlertClose }
+const AlertContent = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex flex-row items-start gap-2 flex-grow", className)}
+    {...props}
+  />
+))
+AlertContent.displayName = "AlertContent"
+
+export { Alert, AlertTitle, AlertDescription, AlertActions, AlertContent }

@@ -2,19 +2,13 @@ import React from 'react';
 
 interface CheckCircleFillProps {
   className?: string;
-  width?: number;
-  height?: number;
 }
 
-const CheckCircleFill: React.FC<CheckCircleFillProps> = ({ 
-  className = '', 
-  width = 24, 
-  height = 24 
-}) => {
+const CheckCircleFill: React.FC<CheckCircleFillProps> = ({ className = '' }) => {
   return (
     <svg 
-      width={width} 
-      height={height} 
+      width="1em" 
+      height="1em" 
       viewBox="0 0 24 24" 
       fill="none" 
       xmlns="http://www.w3.org/2000/svg"
