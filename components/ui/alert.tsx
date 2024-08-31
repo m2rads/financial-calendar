@@ -1,14 +1,18 @@
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
+import { CheckCircleFill, SolidXCircle, SolidShieldExclamation, SolidExclamationCircle } from "@/components/icons"
 
 const alertVariants = cva(
-  "flex justify-start items-start w-[538px] p-2.5 border border-black border-solid rounded box-border",
+  "flex justify-start items-start w-[538px] p-2.5 border border-solid rounded box-border",
   {
     variants: {
       variant: {
-        default: "",
-        destructive: "border-red-500 text-red-500",
+        default: "border-black",
+        success: "bg-[rgba(211,243,240,1)] border-[#23A094]",
+        danger: "bg-[rgba(248,214,210,1)] border-[#DC341E]",
+        warning: "bg-[rgba(253,244,208,1)] border-[#FFC900]",
+        info: "bg-[rgba(233,238,250,1)] border-[#90A8ED]",
       },
     },
     defaultVariants: {
@@ -20,13 +24,12 @@ const alertVariants = cva(
 export interface AlertProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof alertVariants> {
-  icon?: React.ReactNode
   onClose?: () => void
   showCloseButton?: boolean
 }
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
-  ({ className, variant, icon, onClose, showCloseButton, children, ...props }, ref) => {
+  ({ className, variant, onClose, showCloseButton, children, ...props }, ref) => {
     const [isVisible, setIsVisible] = React.useState(true);
 
     const handleClose = () => {
@@ -35,6 +38,21 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
     };
 
     if (!isVisible) return null;
+
+    const getIcon = () => {
+      switch (variant) {
+        case "success":
+          return <CheckCircleFill className="text-[#23A094]" />;
+        case "danger":
+          return <SolidXCircle className="text-[#DC341E]" />;
+        case "warning":
+          return <SolidShieldExclamation className="text-[#FFC900]" />;
+        case "info":
+          return <SolidExclamationCircle className="text-[#90A8ED]" />;
+        default:
+          return null;
+      }
+    };
 
     return (
       <div
@@ -45,7 +63,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
       >
         <div className="flex flex-row justify-between items-start w-full">
           <div className="flex flex-row items-start gap-2 flex-grow">
-            {icon && <div className="flex-shrink-0 text-lg">{icon}</div>}
+            {getIcon() && <div className="flex-shrink-0 text-lg">{getIcon()}</div>}
             <div className="flex-grow">{children}</div>
           </div>
           {showCloseButton && (

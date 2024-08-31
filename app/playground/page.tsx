@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { Alert, AlertTitle, AlertDescription, AlertActions } from '@/components/ui/alert';
-import { CheckCircleFill } from "@/components/icons";
 
 export default function Playground() {
   const handleClose = () => {
@@ -18,15 +17,36 @@ export default function Playground() {
       <h1 className="text-4xl font-bold mb-8">Playground</h1>
       <div className="space-y-8">
         <div>
-          <h2 className="text-2xl font-semibold mb-4">Single-line Alert</h2>
-          <Alert icon={<CheckCircleFill />} showCloseButton onClose={handleClose}>
-            <AlertTitle>I'm a single alert message.</AlertTitle>
+          <h2 className="text-2xl font-semibold mb-4">Success Alert</h2>
+          <Alert variant="success" showCloseButton onClose={handleClose}>
+            <AlertTitle>Success message</AlertTitle>
+          </Alert>
+        </div>
+
+        <div>
+          <h2 className="text-2xl font-semibold mb-4">Danger Alert</h2>
+          <Alert variant="danger" showCloseButton onClose={handleClose}>
+            <AlertTitle>Danger message</AlertTitle>
+          </Alert>
+        </div>
+
+        <div>
+          <h2 className="text-2xl font-semibold mb-4">Warning Alert</h2>
+          <Alert variant="warning" showCloseButton onClose={handleClose}>
+            <AlertTitle>Warning message</AlertTitle>
+          </Alert>
+        </div>
+
+        <div>
+          <h2 className="text-2xl font-semibold mb-4">Info Alert</h2>
+          <Alert variant="info" showCloseButton onClose={handleClose}>
+            <AlertTitle>Info message</AlertTitle>
           </Alert>
         </div>
 
         <div>
           <h2 className="text-2xl font-semibold mb-4">Multi-line Alert with Buttons</h2>
-          <Alert icon={<CheckCircleFill />}>
+          <Alert variant="success">
             <AlertDescription>
               I'm a multiline alert message and a have buttons too! I provide
               detailed messages to help users understand what's going on and
