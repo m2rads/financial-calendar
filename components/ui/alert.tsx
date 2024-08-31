@@ -3,12 +3,12 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const alertVariants = cva(
-  "flex flex-col justify-start items-start w-[538px] p-2.5 border border-black border-solid rounded box-border",
+  "flex justify-start items-start w-[538px] p-2.5 border border-black border-solid rounded box-border",
   {
     variants: {
       variant: {
-        default: "bg-white",
-        destructive: "bg-red-100",
+        default: "",
+        destructive: "border-red-500 text-red-500",
       },
     },
     defaultVariants: {
@@ -22,10 +22,20 @@ export interface AlertProps
     VariantProps<typeof alertVariants> {
   icon?: React.ReactNode
   onClose?: () => void
+  showCloseButton?: boolean
 }
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
-  ({ className, variant, icon, onClose, children, ...props }, ref) => {
+  ({ className, variant, icon, onClose, showCloseButton, children, ...props }, ref) => {
+    const [isVisible, setIsVisible] = React.useState(true);
+
+    const handleClose = () => {
+      setIsVisible(false);
+      onClose?.();
+    };
+
+    if (!isVisible) return null;
+
     return (
       <div
         ref={ref}
@@ -38,9 +48,9 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
             {icon && <div className="flex-shrink-0 text-lg">{icon}</div>}
             <div className="flex-grow">{children}</div>
           </div>
-          {onClose && (
+          {showCloseButton && (
             <button
-              onClick={onClose}
+              onClick={handleClose}
               className="text-sm leading-[130%] font-mabry-pro font-[400] underline cursor-pointer ml-2"
             >
               close

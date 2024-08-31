@@ -19,7 +19,7 @@ export default function Playground() {
       <div className="space-y-8">
         <div>
           <h2 className="text-2xl font-semibold mb-4">Single-line Alert</h2>
-          <Alert icon={<CheckCircleFill />} onClose={handleClose}>
+          <Alert icon={<CheckCircleFill />} showCloseButton onClose={handleClose}>
             <AlertTitle>I'm a single alert message.</AlertTitle>
           </Alert>
         </div>
