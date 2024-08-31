@@ -4,11 +4,11 @@ import { cn } from "@/lib/utils"
 import { CheckCircleFill, SolidXCircle, SolidShieldExclamation, SolidExclamationCircle } from "@/components/icons"
 
 const alertVariants = cva(
-  "flex justify-start items-start w-[538px] p-2.5 border border-solid rounded box-border",
+  "w-[538px] p-2.5 border border-solid rounded box-border shadow-lg transition-all duration-300",
   {
     variants: {
       variant: {
-        default: "border-black",
+        default: "border-black bg-white",
         success: "bg-[rgba(211,243,240,1)] border-[#23A094]",
         danger: "bg-[rgba(248,214,210,1)] border-[#DC341E]",
         warning: "bg-[rgba(253,244,208,1)] border-[#FFC900]",
@@ -22,22 +22,38 @@ const alertVariants = cva(
 )
 
 export interface AlertProps
-  extends React.HTMLAttributes<HTMLDivElement>,
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'id'>,
     VariantProps<typeof alertVariants> {
-  onClose?: () => void
-  showCloseButton?: boolean
+  id: number;
+  onClose?: () => void;
+  showCloseButton?: boolean;
+  duration?: number;
+  multiline?: boolean;
+  variant: 'default' | 'success' | 'danger' | 'warning' | 'info';
+  title?: string;
+  description?: string;
 }
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
-  ({ className, variant, onClose, showCloseButton, children, ...props }, ref) => {
-    const [isVisible, setIsVisible] = React.useState(true);
+  ({ className, variant, onClose, showCloseButton, duration = 5000, multiline = false, children, style, id, ...props }, ref) => {
+    const [isLeaving, setIsLeaving] = React.useState(false);
+
+    React.useEffect(() => {
+      if (!multiline) {
+        const timer = setTimeout(() => {
+          handleClose();
+        }, duration);
+
+        return () => clearTimeout(timer);
+      }
+    }, [duration, multiline]);
 
     const handleClose = () => {
-      setIsVisible(false);
-      onClose?.();
+      setIsLeaving(true);
+      setTimeout(() => {
+        onClose?.();
+      }, 300);
     };
-
-    if (!isVisible) return null;
 
     const getIcon = () => {
       switch (variant) {
@@ -58,7 +74,17 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
       <div
         ref={ref}
         role="alert"
-        className={cn(alertVariants({ variant }), className)}
+        className={cn(
+          alertVariants({ variant }),
+          isLeaving && "opacity-0 translate-x-full",
+          className
+        )}
+        style={{
+          ...style,
+          position: 'fixed',
+          right: '16px',
+          transition: 'all 0.3s ease-in-out',
+        }}
         {...props}
       >
         <div className="flex flex-row justify-between items-start w-full">
@@ -129,4 +155,21 @@ const AlertContent = React.forwardRef<
 ))
 AlertContent.displayName = "AlertContent"
 
-export { Alert, AlertTitle, AlertDescription, AlertActions, AlertContent }
+export const AlertGroup: React.FC<{ alerts: AlertProps[] }> = ({ alerts }) => {
+  return (
+    <div className="fixed top-4 right-4 space-y-4 z-50">
+      {alerts.map((alert, index) => (
+        <Alert
+          key={alert.id}
+          {...alert}
+          style={{
+            ...alert.style,
+            top: `${index * (alert.multiline ? 160 : 80) + 16}px`,
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+export { Alert, AlertTitle, AlertDescription, AlertActions }

@@ -1,124 +1,70 @@
 'use client'
 
-import React from 'react';
-import { Alert, AlertTitle, AlertDescription, AlertActions } from '@/components/ui/alert';
+import React, { useState } from 'react';
+import { Alert, AlertTitle, AlertDescription, AlertActions, AlertProps, AlertGroup } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 
 export default function Playground() {
-  const handleClose = () => {
-    console.log("Alert closed");
+  const [alerts, setAlerts] = useState<AlertProps[]>([]);
+
+  const handleButtonClick = (variant: 'success' | 'danger' | 'warning' | 'info', multiline: boolean = false) => {
+    const newAlert: AlertProps = {
+      id: Date.now(),
+      variant,
+      title: `${variant.charAt(0).toUpperCase() + variant.slice(1)} Alert`,
+      description: multiline 
+        ? `This is a ${variant} multiline alert. It will not disappear automatically and has action buttons.` 
+        : `This is a ${variant} alert that will disappear in 5 seconds.`,
+      multiline,
+      showCloseButton: true,
+      onClose: () => handleCloseAlert(Date.now()),
+    };
+    setAlerts(prevAlerts => [...prevAlerts, newAlert]);
   };
 
-  const handleButtonClick = (buttonText: string) => {
-    console.log(`${buttonText} clicked`);
+  const handleCloseAlert = (id: number) => {
+    setAlerts(prevAlerts => prevAlerts.filter(alert => alert.id !== id));
   };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-start p-24">
-      <h1 className="text-4xl font-bold mb-8">Playground</h1>
+      <h1 className="text-4xl font-bold mb-8">Alert Playground</h1>
       
-      {/* Alerts Section */}
-      <section className="space-y-8 mb-12">
-        <h2 className="text-3xl font-semibold mb-4">Alerts</h2>
-        <div>
-          <h3 className="text-2xl font-semibold mb-4">Success Alert</h3>
-          <Alert variant="success" showCloseButton onClose={handleClose}>
-            <AlertTitle>Success message</AlertTitle>
-          </Alert>
-        </div>
-
-        <div>
-          <h3 className="text-2xl font-semibold mb-4">Danger Alert</h3>
-          <Alert variant="danger" showCloseButton onClose={handleClose}>
-            <AlertTitle>Danger message</AlertTitle>
-          </Alert>
-        </div>
-
-        <div>
-          <h3 className="text-2xl font-semibold mb-4">Warning Alert</h3>
-          <Alert variant="warning" showCloseButton onClose={handleClose}>
-            <AlertTitle>Warning message</AlertTitle>
-          </Alert>
-        </div>
-
-        <div>
-          <h3 className="text-2xl font-semibold mb-4">Info Alert</h3>
-          <Alert variant="info" showCloseButton onClose={handleClose}>
-            <AlertTitle>Info message</AlertTitle>
-          </Alert>
-        </div>
-
-        <div>
-          <h3 className="text-2xl font-semibold mb-4">Multi-line Alert with Buttons</h3>
-          <Alert variant="success">
-            <AlertDescription>
-              I'm a multiline alert message and a have buttons too! I provide
-              detailed messages to help users understand what's going on and
-              capture the attention of the user in an intrusive way. I can have
-              links too!
-            </AlertDescription>
-            <AlertActions>
-              <Button onClick={() => handleButtonClick("Button 1")}>
-                Button
-              </Button>
-              <Button onClick={() => handleButtonClick("Button 2")} className="bg-black text-white">
-                Button
-              </Button>
-            </AlertActions>
-          </Alert>
+      <section className="space-y-4 mb-12">
+        <h2 className="text-2xl font-semibold">Trigger Single-line Alerts</h2>
+        <div className="flex space-x-4">
+          <Button onClick={() => handleButtonClick('success')}>Show Success Alert</Button>
+          <Button onClick={() => handleButtonClick('danger')}>Show Danger Alert</Button>
+          <Button onClick={() => handleButtonClick('warning')}>Show Warning Alert</Button>
+          <Button onClick={() => handleButtonClick('info')}>Show Info Alert</Button>
         </div>
       </section>
 
-      {/* Buttons Section */}
-      <section className="space-y-8">
-        <h2 className="text-3xl font-semibold mb-4">Buttons</h2>
-        
-        <div className="space-y-4">
-          <h3 className="text-2xl font-semibold">Default Buttons</h3>
-          <p className="text-sm text-gray-600 mb-2">Click the buttons to see the press effect!</p>
-          <div className="flex space-x-4">
-            <Button>Default (hover & click me)</Button>
-            <Button variant="disabled">Disabled</Button>
-            <Button variant="hover">Always Hover Style</Button>
-            <Button backgroundColor="#FF90E8">Custom Color</Button>
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          <h3 className="text-2xl font-semibold">Buttons with Icons</h3>
-          <div className="flex space-x-4">
-            <Button leftIcon="save">Left Icon</Button>
-            <Button rightIcon="search">Right Icon</Button>
-            <Button leftIcon="save" rightIcon="eye">Both Icons</Button>
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          <h3 className="text-2xl font-semibold">Icon-only Buttons</h3>
-          <div className="flex space-x-4">
-            <Button iconOnly="save" />
-            <Button iconOnly="search" />
-            <Button iconOnly="eye" />
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          <h3 className="text-2xl font-semibold">Variant Buttons with Icons</h3>
-          <div className="flex space-x-4">
-            <Button variant="disabled" leftIcon="save">Disabled (30% opacity)</Button>
-            <Button variant="hover" rightIcon="search">Hover (with shadow)</Button>
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          <h3 className="text-2xl font-semibold">Custom Color Buttons</h3>
-          <div className="flex space-x-4">
-            <Button backgroundColor="#FF90E8">Pink Button</Button>
-            <Button backgroundColor="#FF90E8" leftIcon="save">Pink with Icon</Button>
-            <Button backgroundColor="#FF90E8" iconOnly="eye" />
-          </div>
+      <section className="space-y-4 mb-12">
+        <h2 className="text-2xl font-semibold">Trigger Multiline Alerts</h2>
+        <div className="flex space-x-4">
+          <Button onClick={() => handleButtonClick('success', true)}>Show Multiline Success</Button>
+          <Button onClick={() => handleButtonClick('danger', true)}>Show Multiline Danger</Button>
+          <Button onClick={() => handleButtonClick('warning', true)}>Show Multiline Warning</Button>
+          <Button onClick={() => handleButtonClick('info', true)}>Show Multiline Info</Button>
         </div>
       </section>
+
+      <AlertGroup alerts={alerts.map(alert => ({
+        ...alert,
+        children: (
+          <>
+            <AlertTitle>{alert.title}</AlertTitle>
+            <AlertDescription>{alert.description}</AlertDescription>
+            {alert.multiline && (
+              <AlertActions>
+                <Button onClick={() => console.log('Action 1 clicked')}>Action 1</Button>
+                <Button onClick={() => console.log('Action 2 clicked')}>Action 2</Button>
+              </AlertActions>
+            )}
+          </>
+        )
+      }))} />
     </main>
   );
 }
