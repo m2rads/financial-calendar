@@ -4,13 +4,13 @@ import { cn } from "@/lib/utils"
 import { SaveIcon, SearchIcon, EyeFill } from "@/components/icons"
 
 const buttonVariants = cva(
-  "flex flex-row justify-center items-center gap-2 px-3.5 py-2.5 border border-solid rounded box-border font-mabry-pro text-base leading-[140%] font-[400] text-center",
+  "flex flex-row justify-center items-center gap-2 px-3.5 py-2.5 border border-solid rounded box-border font-mabry-pro text-base leading-[140%] font-[400] text-center transition-all duration-200",
   {
     variants: {
       variant: {
-        default: "border-black",
-        disabled: "border-black bg-[rgba(251,251,249,1)] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]",
-        hover: "border-black opacity-30",
+        default: "border-black hover:bg-[rgba(251,251,249,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:bg-transparent active:shadow-none",
+        disabled: "border-black opacity-30 cursor-not-allowed",
+        hover: "border-black bg-[rgba(251,251,249,1)] shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:bg-transparent active:shadow-none",
       },
       size: {
         default: "h-12",
@@ -40,19 +40,33 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, leftIcon, rightIcon, iconOnly, backgroundColor, children, ...props }, ref) => {
+  ({ className, variant, size, leftIcon, rightIcon, iconOnly, backgroundColor, children, onClick, ...props }, ref) => {
+    const [isClicked, setIsClicked] = React.useState(false);
     const IconLeft = leftIcon ? iconMap[leftIcon] : null
     const IconRight = rightIcon ? iconMap[rightIcon] : null
     const IconOnly = iconOnly ? iconMap[iconOnly] : null
 
     const buttonStyle = backgroundColor ? { backgroundColor, borderColor: backgroundColor } : {}
 
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+      setIsClicked(true);
+      setTimeout(() => setIsClicked(false), 200); // Reset after 200ms
+      onClick && onClick(event);
+    };
+
+    const buttonClass = cn(
+      buttonVariants({ variant, size }),
+      isClicked && 'bg-transparent shadow-none',
+      className
+    );
+
     if (iconOnly && IconOnly) {
       return (
         <button
-          className={cn(buttonVariants({ variant, size: "icon" }), className)}
+          className={buttonClass}
           ref={ref}
           style={buttonStyle}
+          onClick={handleClick}
           {...props}
         >
           <IconOnly className="w-6 h-6" />
@@ -62,9 +76,10 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     return (
       <button
-        className={cn(buttonVariants({ variant, size }), className)}
+        className={buttonClass}
         ref={ref}
         style={buttonStyle}
+        onClick={handleClick}
         {...props}
       >
         {IconLeft && <IconLeft className="w-[18px] h-[18px]" />}

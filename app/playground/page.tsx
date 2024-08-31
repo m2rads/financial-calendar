@@ -75,10 +75,11 @@ export default function Playground() {
         
         <div className="space-y-4">
           <h3 className="text-2xl font-semibold">Default Buttons</h3>
+          <p className="text-sm text-gray-600 mb-2">Click the buttons to see the press effect!</p>
           <div className="flex space-x-4">
-            <Button>Default</Button>
+            <Button>Default (hover & click me)</Button>
             <Button variant="disabled">Disabled</Button>
-            <Button variant="hover">Hover</Button>
+            <Button variant="hover">Always Hover Style</Button>
             <Button backgroundColor="#FF90E8">Custom Color</Button>
           </div>
         </div>
@@ -104,8 +105,8 @@ export default function Playground() {
         <div className="space-y-4">
           <h3 className="text-2xl font-semibold">Variant Buttons with Icons</h3>
           <div className="flex space-x-4">
-            <Button variant="disabled" leftIcon="save">Disabled</Button>
-            <Button variant="hover" rightIcon="search">Hover</Button>
+            <Button variant="disabled" leftIcon="save">Disabled (30% opacity)</Button>
+            <Button variant="hover" rightIcon="search">Hover (with shadow)</Button>
           </div>
         </div>
 
