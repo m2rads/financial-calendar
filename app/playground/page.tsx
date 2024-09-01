@@ -5,12 +5,19 @@ import { Alert, AlertTitle, AlertDescription, AlertProps } from '@/components/ui
 import { Button } from '@/components/ui/button';
 import { Hover } from '@/components/ui/hover';
 import { Modal } from '@/components/ui/modal';
-import { Pill } from '@/components/ui/pill';  // Add this import
+import { Pill } from '@/components/ui/pill';
+import { Checkbox } from '@/components/ui/checkbox';
 
 export default function Playground() {
   const [alerts, setAlerts] = useState<AlertProps[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalVariant, setModalVariant] = useState<'horizontal' | 'vertical'>('horizontal');
+  const [checkboxStates, setCheckboxStates] = useState({
+    checkbox1: false,
+    checkbox2: true,
+    checkbox3: false,
+    checkbox4: true,
+  });
 
   const handleButtonClick = (variant: 'success' | 'danger' | 'warning' | 'info', multiline: boolean = false) => {
     const newAlert: AlertProps = {
@@ -48,6 +55,10 @@ export default function Playground() {
   const openModal = (variant: 'horizontal' | 'vertical') => {
     setModalVariant(variant);
     setIsModalOpen(true);
+  };
+
+  const handleCheckboxChange = (name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setCheckboxStates(prev => ({ ...prev, [name]: event.target.checked }));
   };
 
   return (
@@ -130,6 +141,38 @@ export default function Playground() {
             <Pill text="Green" size="small" backgroundColor="green" textColor="white" borderColor="green" hoverEffect={true} />
             <Pill text="Longer Small Pill" size="small" backgroundColor="purple" textColor="white" borderColor="purple" />
             <Pill text="XS" size="small" backgroundColor="orange" textColor="white" borderColor="orange" />
+          </div>
+        </section>
+
+        <section className="space-y-4 mb-12">
+          <h2 className="text-2xl font-semibold">Checkbox Component</h2>
+          <div className="flex flex-col gap-4">
+            <Checkbox
+              label="Leading Label (Default Color)"
+              labelPosition="leading"
+              checked={checkboxStates.checkbox1}
+              onChange={handleCheckboxChange('checkbox1')}
+            />
+            <Checkbox
+              label="Trailing Label (Custom Color)"
+              labelPosition="trailing"
+              checked={checkboxStates.checkbox2}
+              onChange={handleCheckboxChange('checkbox2')}
+              selectedColor="#FF90E8"
+            />
+            <Checkbox
+              label="Disabled Unchecked"
+              disabled
+              checked={checkboxStates.checkbox3}
+              onChange={handleCheckboxChange('checkbox3')}
+            />
+            <Checkbox
+              label="Disabled Checked (Custom Color)"
+              disabled
+              checked={checkboxStates.checkbox4}
+              onChange={handleCheckboxChange('checkbox4')}
+              selectedColor="#FF90E8"
+            />
           </div>
         </section>
 
