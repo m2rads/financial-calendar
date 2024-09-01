@@ -4,9 +4,12 @@ import React, { useState } from 'react';
 import { Alert, AlertTitle, AlertDescription, AlertProps } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Hover } from '@/components/ui/hover';
+import { Modal } from '@/components/ui/modal';
 
 export default function Playground() {
   const [alerts, setAlerts] = useState<AlertProps[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalVariant, setModalVariant] = useState<'horizontal' | 'vertical'>('horizontal');
 
   const handleButtonClick = (variant: 'success' | 'danger' | 'warning' | 'info', multiline: boolean = false) => {
     const newAlert: AlertProps = {
@@ -39,6 +42,11 @@ export default function Playground() {
       }
     };
     setAlerts(currentAlerts => [...currentAlerts, newAlert]);
+  };
+
+  const openModal = (variant: 'horizontal' | 'vertical') => {
+    setModalVariant(variant);
+    setIsModalOpen(true);
   };
 
   return (
@@ -79,6 +87,32 @@ export default function Playground() {
             </Hover>
           </div>
         </section>
+
+        <section className="space-y-4 mb-12">
+          <h2 className="text-2xl font-semibold">Modal Component</h2>
+          <div className="flex flex-wrap gap-4">
+            <Button onClick={() => openModal('horizontal')}>Open Horizontal Modal</Button>
+            <Button onClick={() => openModal('vertical')}>Open Vertical Modal</Button>
+          </div>
+        </section>
+
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          title="Delete page?"
+          description="Are you sure you want to delete the page 'What's inside'? Existing customers will lose access to this content. This action cannot be undone."
+          confirmText="Yes, delete"
+          cancelText="No, cancel"
+          onConfirm={() => {
+            console.log('Confirmed');
+            setIsModalOpen(false);
+          }}
+          onCancel={() => {
+            console.log('Cancelled');
+            setIsModalOpen(false);
+          }}
+          variant={modalVariant}
+        />
       </div>
 
       <div className="fixed top-0 right-0 max-h-screen overflow-y-auto p-4 z-50 w-full max-w-[calc(100vw-32px)] sm:max-w-[538px]">
