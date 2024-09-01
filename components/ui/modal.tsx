@@ -58,9 +58,10 @@ const Modal: React.FC<ModalProps> = ({
           <Button
             onClick={onConfirm}
             className={cn(
-              "bg-[rgba(220,52,30,1)] text-white",
+              "bg-[rgba(220,52,30,1)]",
               variant === "vertical" && "w-full"
             )}
+            textColor="white"  // Add this line
           >
             {confirmText}
           </Button>

@@ -96,6 +96,30 @@ export default function Playground() {
           </div>
         </section>
 
+        <section className="space-y-4 mb-12">
+          <h2 className="text-2xl font-semibold">Button Component</h2>
+          <div className="flex flex-wrap gap-4">
+            <Button>Default Button</Button>
+            <Button
+              backgroundColor="rgba(220,52,30,1)"
+              textColor="white"
+              hoverBackgroundColor="rgba(251,251,249,1)"
+              hoverTextColor="rgba(220,52,30,1)"
+            >
+              Custom Color Button
+            </Button>
+            <Button
+              backgroundColor="blue"
+              textColor="white"
+              hoverBackgroundColor="rgba(251,251,249,1)"
+              hoverTextColor="blue"
+            >
+              Blue Button
+            </Button>
+            <Button variant="hover">Hover Button</Button>
+          </div>
+        </section>
+
         <Modal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}

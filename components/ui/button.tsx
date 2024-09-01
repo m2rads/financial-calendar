@@ -37,16 +37,24 @@ export interface ButtonProps
   rightIcon?: keyof typeof iconMap
   iconOnly?: keyof typeof iconMap
   backgroundColor?: string
+  textColor?: string
+  hoverBackgroundColor?: string
+  hoverTextColor?: string
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, leftIcon, rightIcon, iconOnly, backgroundColor, children, onClick, ...props }, ref) => {
+  ({ className, variant, size, leftIcon, rightIcon, iconOnly, backgroundColor, textColor, hoverBackgroundColor, hoverTextColor, children, onClick, ...props }, ref) => {
+    const [isHovered, setIsHovered] = React.useState(false);
     const [isClicked, setIsClicked] = React.useState(false);
     const IconLeft = leftIcon ? iconMap[leftIcon] : null
     const IconRight = rightIcon ? iconMap[rightIcon] : null
     const IconOnly = iconOnly ? iconMap[iconOnly] : null
 
-    const buttonStyle = backgroundColor ? { backgroundColor, borderColor: backgroundColor } : {}
+    const buttonStyle = {
+      backgroundColor: isHovered ? hoverBackgroundColor : backgroundColor,
+      borderColor: backgroundColor,
+      color: isHovered ? hoverTextColor : textColor
+    }
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       setIsClicked(true);
@@ -67,6 +75,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           ref={ref}
           style={buttonStyle}
           onClick={handleClick}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
           {...props}
         >
           <IconOnly className="w-6 h-6" />
@@ -80,6 +90,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         style={buttonStyle}
         onClick={handleClick}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
         {...props}
       >
         {IconLeft && <IconLeft className="w-[18px] h-[18px]" />}
