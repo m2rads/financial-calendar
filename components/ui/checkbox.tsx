@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { Check2 } from "@/components/icons";
 
 const checkboxVariants = cva(
-  "flex items-center gap-2",
+  "inline-flex items-center gap-2",
   {
     variants: {
       labelPosition: {
@@ -29,6 +29,18 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   ({ className, labelPosition, label, disabled, checked, selectedColor = "#FF90E8", ...props }, ref) => {
     return (
       <label className={cn(checkboxVariants({ labelPosition }), className, disabled ? "opacity-30 cursor-not-allowed" : "cursor-pointer")}>
+        <span className="text-base leading-[140%] font-mabry-pro font-[400]">
+          {label}
+        </span>
+        <div 
+          className={cn(
+            "w-6 h-6 border rounded flex items-center justify-center transition-colors flex-shrink-0",
+            checked ? "bg-current" : "border-black"
+          )}
+          style={{ borderColor: checked ? selectedColor : 'black', color: selectedColor }}
+        >
+          {checked && <Check2 className="w-4 h-4 text-white" />}
+        </div>
         <input
           type="checkbox"
           className="sr-only"
@@ -37,18 +49,6 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           ref={ref}
           {...props}
         />
-        <span className="text-base leading-[140%] font-mabry-pro font-[400]">
-          {label}
-        </span>
-        <div 
-          className={cn(
-            "w-6 h-6 border rounded flex items-center justify-center transition-colors",
-            checked ? "bg-current" : "border-black"
-          )}
-          style={{ borderColor: checked ? selectedColor : 'black', color: selectedColor }}
-        >
-          {checked && <Check2 className="w-4 h-4 text-white" />}
-        </div>
       </label>
     );
   }

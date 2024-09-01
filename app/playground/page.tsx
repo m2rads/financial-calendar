@@ -159,14 +159,12 @@ export default function Playground() {
           <h2 className="text-2xl font-semibold">Checkbox Component</h2>
           <div className="flex flex-col gap-4">
             <Checkbox
-              label="Leading Label (Default Color)"
-              labelPosition="leading"
+              label="Default Checkbox"
               checked={checkboxStates.checkbox1}
               onChange={handleCheckboxChange('checkbox1')}
             />
             <Checkbox
-              label="Trailing Label (Custom Color)"
-              labelPosition="trailing"
+              label="Custom Color Checkbox"
               checked={checkboxStates.checkbox2}
               onChange={handleCheckboxChange('checkbox2')}
               selectedColor="#FF90E8"
@@ -191,16 +189,17 @@ export default function Playground() {
           <h2 className="text-2xl font-semibold">Toggle Component</h2>
           <div className="flex flex-col gap-4">
             <Toggle
-              label="Trailing Label"
-              labelPosition="trailing"
+              label="Default Toggle"
               checked={toggleStates.toggle1}
               onChange={handleToggleChange('toggle1')}
             />
             <Toggle
-              label="Leading Label"
-              labelPosition="leading"
+              label="Custom Colors Toggle"
               checked={toggleStates.toggle2}
               onChange={handleToggleChange('toggle2')}
+              activeColor="#4CAF50"
+              inactiveColor="#FFA000"
+              toggleColor="#2196F3"
             />
             <Toggle
               label="Disabled Unchecked"
