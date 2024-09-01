@@ -7,6 +7,7 @@ import { Hover } from '@/components/ui/hover';
 import { Modal } from '@/components/ui/modal';
 import { Pill } from '@/components/ui/pill';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Toggle } from '@/components/ui/toggle';
 
 export default function Playground() {
   const [alerts, setAlerts] = useState<AlertProps[]>([]);
@@ -17,6 +18,12 @@ export default function Playground() {
     checkbox2: true,
     checkbox3: false,
     checkbox4: true,
+  });
+  const [toggleStates, setToggleStates] = useState({
+    toggle1: false,
+    toggle2: true,
+    toggle3: false,
+    toggle4: true,
   });
 
   const handleButtonClick = (variant: 'success' | 'danger' | 'warning' | 'info', multiline: boolean = false) => {
@@ -59,6 +66,10 @@ export default function Playground() {
 
   const handleCheckboxChange = (name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setCheckboxStates(prev => ({ ...prev, [name]: event.target.checked }));
+  };
+
+  const handleToggleChange = (name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    setToggleStates(prev => ({ ...prev, [name]: event.target.checked }));
   };
 
   return (
@@ -172,6 +183,36 @@ export default function Playground() {
               checked={checkboxStates.checkbox4}
               onChange={handleCheckboxChange('checkbox4')}
               selectedColor="#FF90E8"
+            />
+          </div>
+        </section>
+
+        <section className="space-y-4 mb-12">
+          <h2 className="text-2xl font-semibold">Toggle Component</h2>
+          <div className="flex flex-col gap-4">
+            <Toggle
+              label="Trailing Label"
+              labelPosition="trailing"
+              checked={toggleStates.toggle1}
+              onChange={handleToggleChange('toggle1')}
+            />
+            <Toggle
+              label="Leading Label"
+              labelPosition="leading"
+              checked={toggleStates.toggle2}
+              onChange={handleToggleChange('toggle2')}
+            />
+            <Toggle
+              label="Disabled Unchecked"
+              disabled
+              checked={toggleStates.toggle3}
+              onChange={handleToggleChange('toggle3')}
+            />
+            <Toggle
+              label="Disabled Checked"
+              disabled
+              checked={toggleStates.toggle4}
+              onChange={handleToggleChange('toggle4')}
             />
           </div>
         </section>
