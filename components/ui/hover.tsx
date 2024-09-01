@@ -3,11 +3,11 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const hoverVariants = cva(
-  "flex flex-col justify-start items-center",
+  "relative inline-block",
   {
     variants: {
       size: {
-        default: "w-[60px] h-[50px]",
+        default: "",
         // Add more sizes if needed
       },
     },
@@ -18,7 +18,7 @@ const hoverVariants = cva(
 )
 
 const hoverContentVariants = cva(
-  "flex flex-col justify-start items-start w-full p-2.5 border border-solid rounded box-border",
+  "absolute bottom-full left-1/2 transform -translate-x-1/2 flex flex-col justify-start items-start p-2.5 border border-solid rounded box-border opacity-0 transition-opacity duration-200 pointer-events-none",
   {
     variants: {
       variant: {
@@ -39,19 +39,20 @@ export interface HoverProps
 }
 
 const Hover = React.forwardRef<HTMLDivElement, HoverProps>(
-  ({ className, size, content, ...props }, ref) => {
+  ({ className, size, content, children, ...props }, ref) => {
     return (
       <div
-        className={cn(hoverVariants({ size }), className)}
+        className={cn(hoverVariants({ size }), className, "group")}
         ref={ref}
         {...props}
       >
-        <div className={cn(hoverContentVariants())}>
-          <p className="text-sm leading-[130%] font-mabry-pro font-[400]">
+        {children}
+        <div className={cn(hoverContentVariants(), "group-hover:opacity-100 mb-2")}>
+          <p className="text-sm leading-[130%] font-mabry-pro font-[400] whitespace-nowrap">
             {content}
           </p>
+          <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-4 h-2 bg-black clip-path-triangle" />
         </div>
-        <div className="w-4 h-2 bg-black clip-path-triangle" />
       </div>
     )
   }

@@ -68,7 +68,16 @@ export default function Playground() {
 
         <section className="space-y-4 mb-12">
           <h2 className="text-2xl font-semibold">Hover Component</h2>
-          <Hover content="3,507" />
+          <div className="space-y-2">
+            <Hover content="This is a hover tooltip">
+              <span className="cursor-pointer underline">Hover over me</span>
+            </Hover>
+          </div>
+          <div className="space-y-2">
+            <Hover content="3,507 views">
+              <Button variant="default">Hover for stats</Button>
+            </Hover>
+          </div>
         </section>
       </div>
 
