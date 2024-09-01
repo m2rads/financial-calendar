@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Alert, AlertTitle, AlertDescription, AlertProps } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
+import { Hover } from '@/components/ui/hover';
 
 export default function Playground() {
   const [alerts, setAlerts] = useState<AlertProps[]>([]);
@@ -43,7 +44,7 @@ export default function Playground() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-start p-4 sm:p-8 w-full">
       <div className="w-full max-w-3xl">
-        <h1 className="text-4xl font-bold mb-8">Alert Playground</h1>
+        <h1 className="text-4xl font-bold mb-8">Component Playground</h1>
         
         <section className="space-y-4 mb-12">
           <h2 className="text-2xl font-semibold">Trigger Single-line Alerts</h2>
@@ -63,6 +64,11 @@ export default function Playground() {
             <Button onClick={() => handleButtonClick('warning', true)}>Show Multiline Warning</Button>
             <Button onClick={() => handleButtonClick('info', true)}>Show Multiline Info</Button>
           </div>
+        </section>
+
+        <section className="space-y-4 mb-12">
+          <h2 className="text-2xl font-semibold">Hover Component</h2>
+          <Hover content="3,507" />
         </section>
       </div>
 
