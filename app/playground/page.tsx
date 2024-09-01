@@ -5,6 +5,7 @@ import { Alert, AlertTitle, AlertDescription, AlertProps } from '@/components/ui
 import { Button } from '@/components/ui/button';
 import { Hover } from '@/components/ui/hover';
 import { Modal } from '@/components/ui/modal';
+import { Pill } from '@/components/ui/pill';  // Add this import
 
 export default function Playground() {
   const [alerts, setAlerts] = useState<AlertProps[]>([]);
@@ -117,6 +118,18 @@ export default function Playground() {
               Blue Button
             </Button>
             <Button variant="hover">Hover Button</Button>
+          </div>
+        </section>
+
+        <section className="space-y-4 mb-12">
+          <h2 className="text-2xl font-semibold">Pill Component</h2>
+          <div className="flex flex-wrap gap-4">
+            <Pill text="Dismiss" size="regular" icon={true} hoverEffect={true} />
+            <Pill text="Custom" size="regular" backgroundColor="blue" textColor="white" borderColor="blue" hoverEffect={true} />
+            <Pill text="Small" size="small" hoverEffect={true} />
+            <Pill text="Green" size="small" backgroundColor="green" textColor="white" borderColor="green" hoverEffect={true} />
+            <Pill text="Longer Small Pill" size="small" backgroundColor="purple" textColor="white" borderColor="purple" />
+            <Pill text="XS" size="small" backgroundColor="orange" textColor="white" borderColor="orange" />
           </div>
         </section>
 
