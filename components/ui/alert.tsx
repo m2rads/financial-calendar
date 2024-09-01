@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils"
 import { CheckCircleFill, SolidXCircle, SolidShieldExclamation, SolidExclamationCircle } from "@/components/icons"
 
 const alertVariants = cva(
-  "w-[538px] p-2.5 border border-solid rounded box-border shadow-lg transition-all duration-300",
+  "relative w-full max-w-[538px] p-2.5 border border-solid rounded box-border shadow-lg transition-all duration-300",
   {
     variants: {
       variant: {
@@ -22,21 +22,17 @@ const alertVariants = cva(
 )
 
 export interface AlertProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'id'>,
+  extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof alertVariants> {
-  id: number;
-  onClose?: () => void;
-  showCloseButton?: boolean;
-  duration?: number;
-  multiline?: boolean;
-  variant: 'default' | 'success' | 'danger' | 'warning' | 'info';
-  title?: string;
-  description?: string;
+  onClose?: () => void
+  showCloseButton?: boolean
+  duration?: number
+  multiline?: boolean
 }
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
-  ({ className, variant, onClose, showCloseButton, duration = 5000, multiline = false, children, style, id, ...props }, ref) => {
-    const [isLeaving, setIsLeaving] = React.useState(false);
+  ({ className, variant, onClose, showCloseButton, duration = 5000, multiline = false, children, ...props }, ref) => {
+    const [isVisible, setIsVisible] = React.useState(true);
 
     React.useEffect(() => {
       if (!multiline) {
@@ -49,7 +45,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
     }, [duration, multiline]);
 
     const handleClose = () => {
-      setIsLeaving(true);
+      setIsVisible(false);
       setTimeout(() => {
         onClose?.();
       }, 300);
@@ -70,21 +66,17 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
       }
     };
 
+    if (!isVisible) return null;
+
     return (
       <div
         ref={ref}
         role="alert"
         className={cn(
           alertVariants({ variant }),
-          isLeaving && "opacity-0 translate-x-full",
+          "transition-opacity duration-300",
           className
         )}
-        style={{
-          ...style,
-          position: 'fixed',
-          right: '16px',
-          transition: 'all 0.3s ease-in-out',
-        }}
         {...props}
       >
         <div className="flex flex-row justify-between items-start w-full">
@@ -111,7 +103,7 @@ const AlertTitle = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
-  <p
+  <h5
     ref={ref}
     className={cn("text-sm leading-[130%] font-mabry-pro font-[400]", className)}
     {...props}
@@ -123,7 +115,7 @@ const AlertDescription = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
-  <p
+  <div
     ref={ref}
     className={cn("text-sm leading-[130%] font-mabry-pro font-[400]", className)}
     {...props}
@@ -131,45 +123,4 @@ const AlertDescription = React.forwardRef<
 ))
 AlertDescription.displayName = "AlertDescription"
 
-const AlertActions = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn("flex flex-row justify-start items-start gap-2 w-full mt-3 pl-[26px]", className)}
-    {...props}
-  />
-))
-AlertActions.displayName = "AlertActions"
-
-const AlertContent = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn("flex flex-row items-start gap-2 flex-grow", className)}
-    {...props}
-  />
-))
-AlertContent.displayName = "AlertContent"
-
-export const AlertGroup: React.FC<{ alerts: AlertProps[] }> = ({ alerts }) => {
-  return (
-    <div className="fixed top-4 right-4 space-y-4 z-50">
-      {alerts.map((alert, index) => (
-        <Alert
-          key={alert.id}
-          {...alert}
-          style={{
-            ...alert.style,
-            top: `${index * (alert.multiline ? 160 : 80) + 16}px`,
-          }}
-        />
-      ))}
-    </div>
-  );
-};
-
-export { Alert, AlertTitle, AlertDescription, AlertActions }
+export { Alert, AlertTitle, AlertDescription }
