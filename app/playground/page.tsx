@@ -8,6 +8,8 @@ import { Modal } from '@/components/ui/modal';
 import { Pill } from '@/components/ui/pill';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Toggle } from '@/components/ui/toggle';
+import { RadioButtonCard } from '@/components/ui/radioButtonCard';
+import { SaveIcon } from '@/components/icons';
 
 export default function Playground() {
   const [alerts, setAlerts] = useState<AlertProps[]>([]);
@@ -25,6 +27,7 @@ export default function Playground() {
     toggle3: false,
     toggle4: true,
   });
+  const [selectedRadio, setSelectedRadio] = useState<string | null>(null);
 
   const handleButtonClick = (variant: 'success' | 'danger' | 'warning' | 'info', multiline: boolean = false) => {
     const newAlert: AlertProps = {
@@ -70,6 +73,10 @@ export default function Playground() {
 
   const handleToggleChange = (name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setToggleStates(prev => ({ ...prev, [name]: event.target.checked }));
+  };
+
+  const handleRadioButtonClick = (name: string) => () => {
+    setSelectedRadio(name);
   };
 
   return (
@@ -212,6 +219,40 @@ export default function Playground() {
               disabled
               checked={toggleStates.toggle4}
               onChange={handleToggleChange('toggle4')}
+            />
+          </div>
+        </section>
+
+        <section className="space-y-4 mb-12">
+          <h2 className="text-2xl font-semibold">Radio Button Card Component</h2>
+          <div className="flex flex-col gap-4">
+            <RadioButtonCard
+              title="Label"
+              description="Gravida tempor faucibus"
+              icon={<SaveIcon />}
+              selected={selectedRadio === 'radio1'}
+              onClick={handleRadioButtonClick('radio1')}
+            />
+            <RadioButtonCard
+              title="Label"
+              description="Gravida tempor faucibus"
+              icon={<SaveIcon />}
+              selected={selectedRadio === 'radio2'}
+              onClick={handleRadioButtonClick('radio2')}
+            />
+            <RadioButtonCard
+              title="Label"
+              description="Gravida tempor faucibus"
+              icon={<SaveIcon />}
+              selected={selectedRadio === 'radio3'}
+              onClick={handleRadioButtonClick('radio3')}
+            />
+            <RadioButtonCard
+              title="Label"
+              description="Gravida tempor faucibus"
+              icon={<SaveIcon />}
+              selected={selectedRadio === 'radio4'}
+              onClick={handleRadioButtonClick('radio4')}
             />
           </div>
         </section>
