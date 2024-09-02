@@ -254,6 +254,14 @@ export default function Playground() {
               selected={selectedRadio === 'radio4'}
               onClick={handleRadioButtonClick('radio4')}
             />
+            <RadioButtonCard
+              title="Label"
+              description="Gravida tempor faucibus ipsum tristique aliquam amet sed ultrices bibendum."
+              pillText="$222"
+              orientation="vertical"
+              selected={selectedRadio === 'radio5'}
+              onClick={handleRadioButtonClick('radio5')}
+            />
           </div>
         </section>
 
