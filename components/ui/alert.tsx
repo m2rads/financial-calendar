@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils"
 import { CheckCircleFill, SolidXCircle, SolidShieldExclamation, SolidExclamationCircle } from "@/components/icons"
 
 const alertVariants = cva(
-  "relative w-full max-w-[538px] p-2.5 border border-solid rounded box-border shadow-lg transition-all duration-300",
+  "relative w-full max-w-[538px] p-2.5 border border-solid rounded box-border shadow-lg transition-all duration-300 mb-[3px]",
   {
     variants: {
       variant: {
@@ -21,37 +21,12 @@ const alertVariants = cva(
   }
 )
 
-export interface AlertProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof alertVariants> {
-  onClose?: () => void
-  showCloseButton?: boolean
-  duration?: number
-  multiline?: boolean
-}
+export type AlertProps = React.HTMLAttributes<HTMLDivElement> & 
+  VariantProps<typeof alertVariants>
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
-  ({ className, variant, onClose, showCloseButton, duration = 5000, multiline = false, children, ...props }, ref) => {
-    const [isVisible, setIsVisible] = React.useState(true);
-
-    React.useEffect(() => {
-      if (!multiline) {
-        const timer = setTimeout(() => {
-          handleClose();
-        }, duration);
-
-        return () => clearTimeout(timer);
-      }
-    }, [duration, multiline]);
-
-    const handleClose = () => {
-      setIsVisible(false);
-      setTimeout(() => {
-        onClose?.();
-      }, 300);
-    };
-
-    const getIcon = () => {
+  ({ className, variant, ...props }, ref) => {
+    const icon = React.useMemo(() => {
       switch (variant) {
         case "success":
           return <CheckCircleFill className="text-[#23A094]" />;
@@ -64,34 +39,18 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
         default:
           return null;
       }
-    };
-
-    if (!isVisible) return null;
+    }, [variant]);
 
     return (
       <div
         ref={ref}
         role="alert"
-        className={cn(
-          alertVariants({ variant }),
-          "transition-opacity duration-300",
-          className
-        )}
+        className={cn(alertVariants({ variant }), className)}
         {...props}
       >
-        <div className="flex flex-row justify-between items-start w-full">
-          <div className="flex flex-row items-start gap-2 flex-grow">
-            {getIcon() && <div className="flex-shrink-0 text-lg">{getIcon()}</div>}
-            <div className="flex-grow">{children}</div>
-          </div>
-          {showCloseButton && (
-            <button
-              onClick={handleClose}
-              className="text-sm leading-[130%] font-mabry-pro font-[400] underline cursor-pointer ml-2"
-            >
-              close
-            </button>
-          )}
+        <div className="flex flex-row items-start gap-2 w-full">
+          {icon && <div className="flex-shrink-0 text-lg">{icon}</div>}
+          <div className="flex-grow">{props.children}</div>
         </div>
       </div>
     )
@@ -100,8 +59,8 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
 Alert.displayName = "Alert"
 
 const AlertTitle = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
+  HTMLHeadingElement,
+  React.HTMLAttributes<HTMLHeadingElement>
 >(({ className, ...props }, ref) => (
   <h5
     ref={ref}
@@ -112,8 +71,8 @@ const AlertTitle = React.forwardRef<
 AlertTitle.displayName = "AlertTitle"
 
 const AlertDescription = React.forwardRef<
-  HTMLParagraphElement,
-  React.HTMLAttributes<HTMLParagraphElement>
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
@@ -123,4 +82,19 @@ const AlertDescription = React.forwardRef<
 ))
 AlertDescription.displayName = "AlertDescription"
 
-export { Alert, AlertTitle, AlertDescription }
+const AlertClose = React.forwardRef<
+  HTMLButtonElement,
+  React.ButtonHTMLAttributes<HTMLButtonElement>
+>(({ className, onClick, ...props }, ref) => (
+  <button
+    ref={ref}
+    onClick={onClick}
+    className={cn("text-sm leading-[130%] font-mabry-pro font-[400] underline cursor-pointer ml-2", className)}
+    {...props}
+  >
+    close
+  </button>
+))
+AlertClose.displayName = "AlertClose"
+
+export { Alert, AlertTitle, AlertDescription, AlertClose }

@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
-import { Alert, AlertTitle, AlertDescription, AlertProps } from '@/components/ui/alert';
+import { Alert, AlertTitle, AlertDescription, AlertClose } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Hover } from '@/components/ui/hover';
 import { Modal } from '@/components/ui/modal';
@@ -12,7 +12,7 @@ import { RadioButtonCard } from '@/components/ui/radioButtonCard';
 import { SaveIcon } from '@/components/icons';
 
 export default function Playground() {
-  const [alerts, setAlerts] = useState<AlertProps[]>([]);
+  const [alerts, setAlerts] = useState<React.ReactNode[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalVariant, setModalVariant] = useState<'horizontal' | 'vertical'>('horizontal');
   const [checkboxStates, setCheckboxStates] = useState({
@@ -29,37 +29,38 @@ export default function Playground() {
   });
   const [selectedRadio, setSelectedRadio] = useState<string | null>(null);
 
-  const handleButtonClick = (variant: 'success' | 'danger' | 'warning' | 'info', multiline: boolean = false) => {
-    const newAlert: AlertProps = {
-      variant,
-      showCloseButton: true,
-      multiline,
-      duration: multiline ? undefined : 5000,
-      children: (
-        <>
-          <AlertTitle>{`${variant.charAt(0).toUpperCase() + variant.slice(1)} Alert`}</AlertTitle>
-          <AlertDescription>
-            {multiline 
-              ? `I'm a multiline alert message and a have buttons too! I provide detailed messages to help users understand what's going on and capture the attention of the user in an intrusive way. I can have links too!` 
-              : `This is a ${variant} alert that will disappear in 5 seconds.`}
-          </AlertDescription>
-          {multiline && (
-            <div className="flex flex-row justify-start items-start gap-2 w-full mt-3 pl-[26px]">
-              <Button onClick={() => console.log('Action 1 clicked')} variant="default" size="default">
-                Button
-              </Button>
-              <Button onClick={() => console.log('Action 2 clicked')} variant="default" size="default" className="bg-black text-white">
-                Button
-              </Button>
-            </div>
-          )}
-        </>
-      ),
-      onClose: () => {
-        setAlerts(currentAlerts => currentAlerts.filter(a => a !== newAlert));
-      }
-    };
+  const handleButtonClick = (variant: 'default' | 'success' | 'danger' | 'warning' | 'info', multiline: boolean = false) => {
+    const newAlert = (
+      <Alert key={Date.now()} variant={variant}>
+        <div className="flex justify-between items-start w-full">
+          <div>
+            <AlertTitle>{`${variant.charAt(0).toUpperCase() + variant.slice(1)} Alert`}</AlertTitle>
+            <AlertDescription>
+              {multiline 
+                ? `I'm a multiline alert message and I have buttons too! I provide detailed messages to help users understand what's going on and capture the attention of the user in an intrusive way. I can have links too!` 
+                : `This is a ${variant} alert that will disappear in 5 seconds.`}
+            </AlertDescription>
+            {multiline && (
+              <div className="flex flex-row justify-start items-start gap-2 w-full mt-3">
+                <Button onClick={() => console.log('Action 1 clicked')} variant="default" size="default">
+                  Button
+                </Button>
+                <Button onClick={() => console.log('Action 2 clicked')} variant="default" size="default" className="bg-black text-white">
+                  Button
+                </Button>
+              </div>
+            )}
+          </div>
+          <AlertClose onClick={() => setAlerts(currentAlerts => currentAlerts.filter(a => a !== newAlert))} />
+        </div>
+      </Alert>
+    );
     setAlerts(currentAlerts => [...currentAlerts, newAlert]);
+    if (!multiline) {
+      setTimeout(() => {
+        setAlerts(currentAlerts => currentAlerts.filter(a => a !== newAlert));
+      }, 5000);
+    }
   };
 
   const openModal = (variant: 'horizontal' | 'vertical') => {
@@ -285,11 +286,7 @@ export default function Playground() {
       </div>
 
       <div className="fixed top-0 right-0 max-h-screen overflow-y-auto p-4 z-50 w-full max-w-[calc(100vw-32px)] sm:max-w-[538px]">
-        {alerts.map((alert, index) => (
-          <div key={index} className="mb-2 last:mb-0">
-            <Alert {...alert} />
-          </div>
-        ))}
+        {alerts}
       </div>
     </main>
   );
