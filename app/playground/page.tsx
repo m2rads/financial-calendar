@@ -4,13 +4,22 @@ import React, { useState } from 'react';
 import { Alert, AlertDescription, AlertClose } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Tooltip } from '@/components/ui/tooltip';
-import { Modal } from '@/components/ui/modal';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+} from '@/components/ui/dialog';
 import { Pill } from '@/components/ui/pill';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Toggle } from '@/components/ui/toggle';
 import { RadioButtonCard } from '@/components/ui/radioButtonCard';
 import { SaveIcon, CheckCircleFill, SolidXCircle, SolidShieldExclamation, SolidExclamationCircle } from '@/components/icons';
+import { cn } from '@/lib/utils';
 
 const alertVariants = {
   success: {
@@ -261,23 +270,42 @@ export default function Playground() {
           </div>
         </section>
 
-        <Modal
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          title="Delete page?"
-          description="Are you sure you want to delete the page 'What's inside'? Existing customers will lose access to this content. This action cannot be undone."
-          confirmText="Yes, delete"
-          cancelText="No, cancel"
-          onConfirm={() => {
-            console.log('Confirmed');
-            setIsModalOpen(false);
-          }}
-          onCancel={() => {
-            console.log('Cancelled');
-            setIsModalOpen(false);
-          }}
-          variant={modalVariant}
-        />
+        <Dialog isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} variant={modalVariant}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Delete page?</DialogTitle>
+              <DialogClose onClick={() => setIsModalOpen(false)} />
+            </DialogHeader>
+            <DialogDescription className="mb-6">
+              Are you sure you want to delete the page 'What's inside'? Existing customers will lose access to this content. This action cannot be undone.
+            </DialogDescription>
+            <DialogFooter variant={modalVariant}>
+              <Button
+                onClick={() => {
+                  console.log('Confirmed');
+                  setIsModalOpen(false);
+                }}
+                className={cn(
+                  "bg-[rgba(220,52,30,1)]",
+                  modalVariant === "vertical" && "w-full"
+                )}
+                textColor="white"
+              >
+                Yes, delete
+              </Button>
+              <Button
+                onClick={() => {
+                  console.log('Cancelled');
+                  setIsModalOpen(false);
+                }}
+                variant="default"
+                className={cn(modalVariant === "vertical" && "w-full")}
+              >
+                No, cancel
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <div className="fixed top-0 right-0 max-h-screen overflow-y-auto p-4 z-50 w-full max-w-[calc(100vw-32px)] sm:max-w-[538px]">
