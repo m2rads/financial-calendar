@@ -1,12 +1,11 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
-export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
-  icon?: React.ReactNode;
-}
+export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
-  ({ className, children, icon, ...props }, ref) => {
+  ({ className, children, ...props }, ref) => {
+    const [icon, ...otherChildren] = React.Children.toArray(children);
     return (
       <div
         ref={ref}
@@ -17,9 +16,9 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
         )}
         {...props}
       >
-        {icon && <div className="flex-shrink-0 text-lg">{icon}</div>}
+        {React.isValidElement(icon) && <div className="flex-shrink-0 text-lg">{icon}</div>}
         <div className="flex-grow flex justify-between items-start">
-          {children}
+          {otherChildren}
         </div>
       </div>
     )

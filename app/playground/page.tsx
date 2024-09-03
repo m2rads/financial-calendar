@@ -50,7 +50,8 @@ export default function Playground() {
 
   const handleButtonClick = (variant: keyof typeof alertVariants) => {
     const newAlert = (
-      <Alert key={Date.now()} className={alertVariants[variant].className} icon={alertVariants[variant].icon}>
+      <Alert key={Date.now()} className={alertVariants[variant].className}>
+        {alertVariants[variant].icon}
         <AlertDescription>
           This is a {variant} alert that will disappear in 5 seconds.
         </AlertDescription>
