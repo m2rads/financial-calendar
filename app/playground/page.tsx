@@ -50,6 +50,9 @@ export default function Playground() {
     toggle2: true,
     toggle3: false,
     toggle4: true,
+    toggle5: false,
+    toggle6: false,
+    toggle7: false,
   });
   const [selectedRadio, setSelectedRadio] = useState<string | null>(null);
 
@@ -150,23 +153,23 @@ export default function Playground() {
         <section className="space-y-4 mb-12">
           <h2 className="text-2xl font-semibold">Pill Component</h2>
           <div className="flex flex-wrap gap-4">
-            <Pill size="regular" className="bg-black text-white border-black hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-[2px] hover:-translate-y-[2px]">
+            <Pill className="bg-black text-white border-black hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-[2px] hover:-translate-y-[2px]">
               <PillContent>Dismiss</PillContent>
               <OutlineX className="w-3 h-3" />
             </Pill>
-            <Pill size="regular" className="bg-blue-500 text-white border-blue-500 hover:shadow-[4px_4px_0px_0px_rgba(59,130,246,1)] hover:-translate-x-[2px] hover:-translate-y-[2px]">
+            <Pill className="bg-blue-500 text-white border-blue-500 hover:shadow-[4px_4px_0px_0px_rgba(59,130,246,1)] hover:-translate-x-[2px] hover:-translate-y-[2px]">
               <PillContent>Custom</PillContent>
             </Pill>
-            <Pill size="small" className="bg-black text-white border-black hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-[2px] hover:-translate-y-[2px]">
+            <Pill className="bg-black text-white border-black hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-[2px] hover:-translate-y-[2px]">
               <PillContent>Small</PillContent>
             </Pill>
-            <Pill size="small" className="bg-green-500 text-white border-green-500 hover:shadow-[4px_4px_0px_0px_rgba(34,197,94,1)] hover:-translate-x-[2px] hover:-translate-y-[2px]">
+            <Pill className="bg-green-500 text-white border-green-500 hover:shadow-[4px_4px_0px_0px_rgba(34,197,94,1)] hover:-translate-x-[2px] hover:-translate-y-[2px]">
               <PillContent>Green</PillContent>
             </Pill>
-            <Pill size="small" className="bg-purple-500 text-white border-purple-500">
+            <Pill className="bg-purple-500 text-white border-purple-500">
               <PillContent>Longer Small Pill</PillContent>
             </Pill>
-            <Pill size="small" className="bg-orange-500 text-white border-orange-500">
+            <Pill className="bg-orange-500 text-white border-orange-500">
               <PillContent>XS</PillContent>
             </Pill>
           </div>
@@ -214,31 +217,47 @@ export default function Playground() {
         <section className="space-y-4 mb-12">
           <h2 className="text-2xl font-semibold">Toggle Component</h2>
           <div className="flex flex-col gap-4">
-            <Toggle
-              label="Default Toggle"
-              checked={toggleStates.toggle1}
-              onChange={handleToggleChange('toggle1')}
-            />
-            <Toggle
-              label="Custom Colors Toggle"
-              checked={toggleStates.toggle2}
-              onChange={handleToggleChange('toggle2')}
-              activeColor="#4CAF50"
-              inactiveColor="#FFA000"
-              toggleColor="#2196F3"
-            />
-            <Toggle
-              label="Disabled Unchecked"
-              disabled
-              checked={toggleStates.toggle3}
-              onChange={handleToggleChange('toggle3')}
-            />
-            <Toggle
-              label="Disabled Checked"
-              disabled
-              checked={toggleStates.toggle4}
-              onChange={handleToggleChange('toggle4')}
-            />
+            <div className="flex items-center space-x-2">
+              <Toggle
+                checked={toggleStates.toggle1}
+                onChange={(e) => handleToggleChange('toggle1')(e)}
+              />
+              <Label htmlFor="toggle1">Default Toggle</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Toggle
+                checked={toggleStates.toggle2}
+                onChange={(e) => handleToggleChange('toggle2')(e)}
+                activeColor="#4CAF50"
+                inactiveColor="#FFA000"
+                toggleColor="#2196F3"
+              />
+              <Label htmlFor="toggle2">Custom Colors Toggle</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Toggle
+                disabled
+                checked={toggleStates.toggle3}
+                onChange={(e) => handleToggleChange('toggle3')(e)}
+              />
+              <Label htmlFor="toggle3">Disabled Unchecked</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Toggle
+                disabled
+                checked={toggleStates.toggle4}
+                onChange={(e) => handleToggleChange('toggle4')(e)}
+              />
+              <Label htmlFor="toggle4">Disabled Checked</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Label htmlFor="toggle5">Toggle with leading label</Label>
+              <Toggle
+                id="toggle5"
+                checked={toggleStates.toggle5}
+                onChange={(e) => handleToggleChange('toggle5')(e)}
+              />
+            </div>
           </div>
         </section>
 

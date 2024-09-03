@@ -1,26 +1,7 @@
 import React, { forwardRef } from "react";
-import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-const toggleVariants = cva(
-  "inline-flex items-center gap-2",
-  {
-    variants: {
-      labelPosition: {
-        leading: "flex-row",
-        trailing: "flex-row-reverse",
-      },
-    },
-    defaultVariants: {
-      labelPosition: "leading",
-    },
-  }
-);
-
-export interface ToggleProps
-  extends React.InputHTMLAttributes<HTMLInputElement>,
-    VariantProps<typeof toggleVariants> {
-  label: string;
+export interface ToggleProps extends React.InputHTMLAttributes<HTMLInputElement> {
   activeColor?: string;
   inactiveColor?: string;
   toggleColor?: string;
@@ -29,8 +10,6 @@ export interface ToggleProps
 const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
   ({ 
     className, 
-    labelPosition, 
-    label, 
     disabled, 
     checked, 
     activeColor = "#FF90E8", 
@@ -39,26 +18,19 @@ const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
     ...props 
   }, ref) => {
     return (
-      <label className={cn(toggleVariants({ labelPosition }), className, disabled ? "opacity-30 cursor-not-allowed" : "cursor-pointer")}>
-        <span className="text-base leading-[140%] font-mabry-pro font-[400]">
-          {label}
-        </span>
+      <div className={cn("inline-flex items-center", className, disabled ? "opacity-30 cursor-not-allowed" : "cursor-pointer")}>
         <div 
-          className={cn(
-            "relative w-[42px] h-6 rounded-full transition-colors duration-300 ease-in-out border border-black flex-shrink-0",
-          )}
+          className="relative rounded-full transition-colors duration-300 ease-in-out border border-black flex-shrink-0 h-6 w-[42px]"
           style={{
             backgroundColor: checked ? activeColor : inactiveColor,
           }}
         >
           <div
-            className={cn(
-              "absolute w-5 h-5 rounded-full transition-transform duration-300 ease-bounce",
-            )}
+            className="absolute rounded-full transition-transform duration-300 ease-bounce w-5 h-5"
             style={{
               backgroundColor: toggleColor,
               transform: checked ? 'translateX(calc(100% - 2px))' : 'translateX(1px)',
-              top: 'calc(50% - 10px)',
+              top: '1px',
               left: '0',
             }}
           />
@@ -71,11 +43,11 @@ const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
           ref={ref}
           {...props}
         />
-      </label>
+      </div>
     );
   }
 );
 
 Toggle.displayName = "Toggle";
 
-export { Toggle, toggleVariants };
+export { Toggle };
