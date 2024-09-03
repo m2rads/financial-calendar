@@ -1,59 +1,55 @@
-import React, { forwardRef } from "react";
-import { cva, type VariantProps } from "class-variance-authority";
+import React, { forwardRef, useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Check2 } from "@/components/icons";
 
-const checkboxVariants = cva(
-  "inline-flex items-center gap-2",
-  {
-    variants: {
-      labelPosition: {
-        leading: "flex-row",
-        trailing: "flex-row-reverse",
-      },
-    },
-    defaultVariants: {
-      labelPosition: "leading",
-    },
-  }
-);
-
-export interface CheckboxProps
-  extends React.InputHTMLAttributes<HTMLInputElement>,
-    VariantProps<typeof checkboxVariants> {
-  label: string;
+export interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
   selectedColor?: string;
+  onChange?: (checked: boolean) => void;
 }
 
 const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
-  ({ className, labelPosition, label, disabled, checked, selectedColor = "#FF90E8", ...props }, ref) => {
+  ({ className, selectedColor = "#FF90E8", onChange, ...props }, ref) => {
+    const [isChecked, setIsChecked] = useState(props.defaultChecked || false);
+
+    useEffect(() => {
+      if (props.checked !== undefined) {
+        setIsChecked(props.checked);
+      }
+    }, [props.checked]);
+
+    const handleClick = () => {
+      if (!props.disabled) {
+        const newChecked = !isChecked;
+        setIsChecked(newChecked);
+        onChange?.(newChecked);
+      }
+    };
+
     return (
-      <label className={cn(checkboxVariants({ labelPosition }), className, disabled ? "opacity-30 cursor-not-allowed" : "cursor-pointer")}>
-        <span className="text-base leading-[140%] font-mabry-pro font-[400]">
-          {label}
-        </span>
-        <div 
-          className={cn(
-            "w-6 h-6 border rounded flex items-center justify-center transition-colors flex-shrink-0",
-            checked ? "bg-current" : "border-black"
-          )}
-          style={{ borderColor: checked ? selectedColor : 'black', color: selectedColor }}
-        >
-          {checked && <Check2 className="w-4 h-4 text-white" />}
-        </div>
+      <div className="relative inline-flex items-center" onClick={handleClick}>
         <input
           type="checkbox"
           className="sr-only"
-          disabled={disabled}
-          checked={checked}
           ref={ref}
+          checked={isChecked}
           {...props}
         />
-      </label>
+        <div 
+          className={cn(
+            "w-6 h-6 border rounded flex items-center justify-center transition-colors flex-shrink-0",
+            isChecked ? "bg-current" : "border-black",
+            props.disabled ? "opacity-30 cursor-not-allowed" : "cursor-pointer",
+            className
+          )}
+          style={{ borderColor: isChecked ? selectedColor : 'black', color: selectedColor }}
+        >
+          {isChecked && <Check2 className="w-4 h-4 text-white" />}
+        </div>
+      </div>
     );
   }
 );
 
 Checkbox.displayName = "Checkbox";
 
-export { Checkbox, checkboxVariants };
+export { Checkbox };

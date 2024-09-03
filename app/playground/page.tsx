@@ -7,6 +7,7 @@ import { Hover } from '@/components/ui/hover';
 import { Modal } from '@/components/ui/modal';
 import { Pill } from '@/components/ui/pill';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
 import { Toggle } from '@/components/ui/toggle';
 import { RadioButtonCard } from '@/components/ui/radioButtonCard';
 import { SaveIcon, CheckCircleFill, SolidXCircle, SolidShieldExclamation, SolidExclamationCircle } from '@/components/icons';
@@ -34,12 +35,6 @@ export default function Playground() {
   const [alerts, setAlerts] = useState<React.ReactNode[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalVariant, setModalVariant] = useState<'horizontal' | 'vertical'>('horizontal');
-  const [checkboxStates, setCheckboxStates] = useState({
-    checkbox1: false,
-    checkbox2: true,
-    checkbox3: false,
-    checkbox4: true,
-  });
   const [toggleStates, setToggleStates] = useState({
     toggle1: false,
     toggle2: true,
@@ -47,6 +42,12 @@ export default function Playground() {
     toggle4: true,
   });
   const [selectedRadio, setSelectedRadio] = useState<string | null>(null);
+  const [checkboxStates, setCheckboxStates] = useState({
+    checkbox1: false,
+    checkbox2: false,
+    checkbox3: false,
+    checkbox4: true,
+  });
 
   const handleButtonClick = (variant: keyof typeof alertVariants) => {
     const newAlert = (
@@ -69,16 +70,16 @@ export default function Playground() {
     setIsModalOpen(true);
   };
 
-  const handleCheckboxChange = (name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCheckboxStates(prev => ({ ...prev, [name]: event.target.checked }));
-  };
-
   const handleToggleChange = (name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
     setToggleStates(prev => ({ ...prev, [name]: event.target.checked }));
   };
 
   const handleRadioButtonClick = (name: string) => () => {
     setSelectedRadio(name);
+  };
+
+  const handleCheckboxChange = (name: string) => (checked: boolean) => {
+    setCheckboxStates(prev => ({ ...prev, [name]: checked }));
   };
 
   return (
@@ -157,30 +158,34 @@ export default function Playground() {
         <section className="space-y-4 mb-12">
           <h2 className="text-2xl font-semibold">Checkbox Component</h2>
           <div className="flex flex-col gap-4">
-            <Checkbox
-              label="Default Checkbox"
-              checked={checkboxStates.checkbox1}
-              onChange={handleCheckboxChange('checkbox1')}
-            />
-            <Checkbox
-              label="Custom Color Checkbox"
-              checked={checkboxStates.checkbox2}
-              onChange={handleCheckboxChange('checkbox2')}
-              selectedColor="#FF90E8"
-            />
-            <Checkbox
-              label="Disabled Unchecked"
-              disabled
-              checked={checkboxStates.checkbox3}
-              onChange={handleCheckboxChange('checkbox3')}
-            />
-            <Checkbox
-              label="Disabled Checked (Custom Color)"
-              disabled
-              checked={checkboxStates.checkbox4}
-              onChange={handleCheckboxChange('checkbox4')}
-              selectedColor="#FF90E8"
-            />
+            <div className="flex items-center space-x-2">
+              <Checkbox 
+                id="checkbox1" 
+              />
+              <Label htmlFor="checkbox1">Default Checkbox</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Checkbox 
+                id="checkbox2" 
+                selectedColor="#FF90E8"
+              />
+              <Label htmlFor="checkbox2">Custom Color Checkbox</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Checkbox 
+                id="checkbox3" 
+                disabled 
+              />
+              <Label htmlFor="checkbox3">Disabled Unchecked</Label>
+            </div>
+            <div className="flex items-center space-x-2">
+              <Checkbox 
+                id="checkbox4" 
+                disabled 
+                selectedColor="#FF90E8" 
+              />
+              <Label htmlFor="checkbox4">Disabled Checked</Label>
+            </div>
           </div>
         </section>
 
