@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { Alert, AlertDescription, AlertClose } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { Hover } from '@/components/ui/hover';
+import { Tooltip } from '@/components/ui/tooltip';
 import { Modal } from '@/components/ui/modal';
 import { Pill } from '@/components/ui/pill';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -42,12 +42,6 @@ export default function Playground() {
     toggle4: true,
   });
   const [selectedRadio, setSelectedRadio] = useState<string | null>(null);
-  const [checkboxStates, setCheckboxStates] = useState({
-    checkbox1: false,
-    checkbox2: false,
-    checkbox3: false,
-    checkbox4: true,
-  });
 
   const handleButtonClick = (variant: keyof typeof alertVariants) => {
     const newAlert = (
@@ -78,10 +72,6 @@ export default function Playground() {
     setSelectedRadio(name);
   };
 
-  const handleCheckboxChange = (name: string) => (checked: boolean) => {
-    setCheckboxStates(prev => ({ ...prev, [name]: checked }));
-  };
-
   return (
     <main className="flex min-h-screen flex-col items-center justify-start p-4 sm:p-8 w-full">
       <div className="w-full max-w-3xl">
@@ -98,16 +88,20 @@ export default function Playground() {
         </section>
 
         <section className="space-y-4 mb-12">
-          <h2 className="text-2xl font-semibold">Hover Component</h2>
-          <div className="space-y-2">
-            <Hover content="This is a hover tooltip">
-              <span className="cursor-pointer underline">Hover over me</span>
-            </Hover>
-          </div>
-          <div className="space-y-2">
-            <Hover content="3,507 views">
-              <Button variant="default">Hover for stats</Button>
-            </Hover>
+          <h2 className="text-2xl font-semibold">Tooltip Component</h2>
+          <div className="flex flex-wrap gap-8">
+            <Tooltip content="This is a top tooltip" position="top">
+              <Button>Hover for top tooltip</Button>
+            </Tooltip>
+            <Tooltip content="This is a bottom tooltip" position="bottom">
+              <Button>Hover for bottom tooltip</Button>
+            </Tooltip>
+            <Tooltip content="This is a left tooltip" position="left">
+              <Button>Hover for left tooltip</Button>
+            </Tooltip>
+            <Tooltip content="This is a right tooltip" position="right">
+              <Button>Hover for right tooltip</Button>
+            </Tooltip>
           </div>
         </section>
 
