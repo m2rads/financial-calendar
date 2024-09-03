@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
-import { Alert, AlertTitle, AlertDescription, AlertClose } from '@/components/ui/alert';
+import { Alert, AlertDescription, AlertClose } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Hover } from '@/components/ui/hover';
 import { Modal } from '@/components/ui/modal';
@@ -9,7 +9,26 @@ import { Pill } from '@/components/ui/pill';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Toggle } from '@/components/ui/toggle';
 import { RadioButtonCard } from '@/components/ui/radioButtonCard';
-import { SaveIcon } from '@/components/icons';
+import { SaveIcon, CheckCircleFill, SolidXCircle, SolidShieldExclamation, SolidExclamationCircle } from '@/components/icons';
+
+const alertVariants = {
+  success: {
+    className: "bg-[rgba(211,243,240,1)] border-[#23A094]",
+    icon: <CheckCircleFill className="text-[#23A094]" />,
+  },
+  danger: {
+    className: "bg-[rgba(248,214,210,1)] border-[#DC341E]",
+    icon: <SolidXCircle className="text-[#DC341E]" />,
+  },
+  warning: {
+    className: "bg-[rgba(253,244,208,1)] border-[#FFC900]",
+    icon: <SolidShieldExclamation className="text-[#FFC900]" />,
+  },
+  info: {
+    className: "bg-[rgba(233,238,250,1)] border-[#90A8ED]",
+    icon: <SolidExclamationCircle className="text-[#90A8ED]" />,
+  },
+};
 
 export default function Playground() {
   const [alerts, setAlerts] = useState<React.ReactNode[]>([]);
@@ -29,38 +48,19 @@ export default function Playground() {
   });
   const [selectedRadio, setSelectedRadio] = useState<string | null>(null);
 
-  const handleButtonClick = (variant: 'default' | 'success' | 'danger' | 'warning' | 'info', multiline: boolean = false) => {
+  const handleButtonClick = (variant: keyof typeof alertVariants) => {
     const newAlert = (
-      <Alert key={Date.now()} variant={variant}>
-        <div className="flex justify-between items-start w-full">
-          <div>
-            <AlertTitle>{`${variant.charAt(0).toUpperCase() + variant.slice(1)} Alert`}</AlertTitle>
-            <AlertDescription>
-              {multiline 
-                ? `I'm a multiline alert message and I have buttons too! I provide detailed messages to help users understand what's going on and capture the attention of the user in an intrusive way. I can have links too!` 
-                : `This is a ${variant} alert that will disappear in 5 seconds.`}
-            </AlertDescription>
-            {multiline && (
-              <div className="flex flex-row justify-start items-start gap-2 w-full mt-3">
-                <Button onClick={() => console.log('Action 1 clicked')} variant="default" size="default">
-                  Button
-                </Button>
-                <Button onClick={() => console.log('Action 2 clicked')} variant="default" size="default" className="bg-black text-white">
-                  Button
-                </Button>
-              </div>
-            )}
-          </div>
-          <AlertClose onClick={() => setAlerts(currentAlerts => currentAlerts.filter(a => a !== newAlert))} />
-        </div>
+      <Alert key={Date.now()} className={alertVariants[variant].className} icon={alertVariants[variant].icon}>
+        <AlertDescription>
+          This is a {variant} alert that will disappear in 5 seconds.
+        </AlertDescription>
+        <AlertClose onClick={() => setAlerts(currentAlerts => currentAlerts.filter(a => a !== newAlert))} />
       </Alert>
     );
     setAlerts(currentAlerts => [...currentAlerts, newAlert]);
-    if (!multiline) {
-      setTimeout(() => {
-        setAlerts(currentAlerts => currentAlerts.filter(a => a !== newAlert));
-      }, 5000);
-    }
+    setTimeout(() => {
+      setAlerts(currentAlerts => currentAlerts.filter(a => a !== newAlert));
+    }, 5000);
   };
 
   const openModal = (variant: 'horizontal' | 'vertical') => {
@@ -86,22 +86,12 @@ export default function Playground() {
         <h1 className="text-4xl font-bold mb-8">Component Playground</h1>
         
         <section className="space-y-4 mb-12">
-          <h2 className="text-2xl font-semibold">Trigger Single-line Alerts</h2>
+          <h2 className="text-2xl font-semibold">Trigger Alerts</h2>
           <div className="flex flex-wrap gap-4">
             <Button onClick={() => handleButtonClick('success')}>Show Success Alert</Button>
             <Button onClick={() => handleButtonClick('danger')}>Show Danger Alert</Button>
             <Button onClick={() => handleButtonClick('warning')}>Show Warning Alert</Button>
             <Button onClick={() => handleButtonClick('info')}>Show Info Alert</Button>
-          </div>
-        </section>
-
-        <section className="space-y-4 mb-12">
-          <h2 className="text-2xl font-semibold">Trigger Multiline Alerts</h2>
-          <div className="flex flex-wrap gap-4">
-            <Button onClick={() => handleButtonClick('success', true)}>Show Multiline Success</Button>
-            <Button onClick={() => handleButtonClick('danger', true)}>Show Multiline Danger</Button>
-            <Button onClick={() => handleButtonClick('warning', true)}>Show Multiline Warning</Button>
-            <Button onClick={() => handleButtonClick('info', true)}>Show Multiline Info</Button>
           </div>
         </section>
 
