@@ -13,7 +13,8 @@ import {
   DialogFooter,
   DialogClose,
 } from '@/components/ui/dialog';
-import { Pill } from '@/components/ui/pill';
+import { Pill, PillContent } from '@/components/ui/pill';
+import { OutlineX } from "@/components/icons";
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Toggle } from '@/components/ui/toggle';
@@ -149,12 +150,25 @@ export default function Playground() {
         <section className="space-y-4 mb-12">
           <h2 className="text-2xl font-semibold">Pill Component</h2>
           <div className="flex flex-wrap gap-4">
-            <Pill text="Dismiss" size="regular" icon={true} hoverEffect={true} />
-            <Pill text="Custom" size="regular" backgroundColor="blue" textColor="white" borderColor="blue" hoverEffect={true} />
-            <Pill text="Small" size="small" hoverEffect={true} />
-            <Pill text="Green" size="small" backgroundColor="green" textColor="white" borderColor="green" hoverEffect={true} />
-            <Pill text="Longer Small Pill" size="small" backgroundColor="purple" textColor="white" borderColor="purple" />
-            <Pill text="XS" size="small" backgroundColor="orange" textColor="white" borderColor="orange" />
+            <Pill size="regular" className="bg-black text-white border-black hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-[2px] hover:-translate-y-[2px]">
+              <PillContent>Dismiss</PillContent>
+              <OutlineX className="w-3 h-3" />
+            </Pill>
+            <Pill size="regular" className="bg-blue-500 text-white border-blue-500 hover:shadow-[4px_4px_0px_0px_rgba(59,130,246,1)] hover:-translate-x-[2px] hover:-translate-y-[2px]">
+              <PillContent>Custom</PillContent>
+            </Pill>
+            <Pill size="small" className="bg-black text-white border-black hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-[2px] hover:-translate-y-[2px]">
+              <PillContent>Small</PillContent>
+            </Pill>
+            <Pill size="small" className="bg-green-500 text-white border-green-500 hover:shadow-[4px_4px_0px_0px_rgba(34,197,94,1)] hover:-translate-x-[2px] hover:-translate-y-[2px]">
+              <PillContent>Green</PillContent>
+            </Pill>
+            <Pill size="small" className="bg-purple-500 text-white border-purple-500">
+              <PillContent>Longer Small Pill</PillContent>
+            </Pill>
+            <Pill size="small" className="bg-orange-500 text-white border-orange-500">
+              <PillContent>XS</PillContent>
+            </Pill>
           </div>
         </section>
 
