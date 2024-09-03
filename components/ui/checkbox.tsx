@@ -31,8 +31,9 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
           type="checkbox"
           className="sr-only"
           ref={ref}
-          checked={isChecked}
           {...props}
+          checked={isChecked}
+          onChange={() => {}} // Add an empty onChange to satisfy React's controlled component requirement
         />
         <div 
           className={cn(

@@ -155,6 +155,7 @@ export default function Playground() {
             <div className="flex items-center space-x-2">
               <Checkbox 
                 id="checkbox1" 
+                onChange={(checked) => console.log('Checkbox 1:', checked)}
               />
               <Label htmlFor="checkbox1">Default Checkbox</Label>
             </div>
@@ -162,6 +163,7 @@ export default function Playground() {
               <Checkbox 
                 id="checkbox2" 
                 selectedColor="#FF90E8"
+                onChange={(checked) => console.log('Checkbox 2:', checked)}
               />
               <Label htmlFor="checkbox2">Custom Color Checkbox</Label>
             </div>
@@ -169,6 +171,7 @@ export default function Playground() {
               <Checkbox 
                 id="checkbox3" 
                 disabled 
+                onChange={(checked) => console.log('Checkbox 3:', checked)}
               />
               <Label htmlFor="checkbox3">Disabled Unchecked</Label>
             </div>
@@ -176,7 +179,9 @@ export default function Playground() {
               <Checkbox 
                 id="checkbox4" 
                 disabled 
+                defaultChecked
                 selectedColor="#FF90E8" 
+                onChange={(checked) => console.log('Checkbox 4:', checked)}
               />
               <Label htmlFor="checkbox4">Disabled Checked</Label>
             </div>
