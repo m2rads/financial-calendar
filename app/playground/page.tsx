@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useState, FormEvent } from 'react';
 import { Alert, AlertDescription, AlertClose } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Tooltip } from '@/components/ui/tooltip';
@@ -18,7 +18,7 @@ import { OutlineX } from "@/components/icons";
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Toggle } from '@/components/ui/toggle';
-import { RadioButtonCard } from '@/components/ui/radioButtonCard';
+import { RadioGroup, RadioGroupItem, RadioGroupLabel, RadioGroupDescription } from '@/components/ui/radio-group';
 import { SaveIcon, CheckCircleFill, SolidXCircle, SolidShieldExclamation, SolidExclamationCircle } from '@/components/icons';
 import { cn } from '@/lib/utils';
 
@@ -55,6 +55,10 @@ export default function Playground() {
     toggle7: false,
   });
   const [selectedRadio, setSelectedRadio] = useState<string | null>(null);
+  const [formData, setFormData] = useState({
+    plan: '',
+    paymentMethod: '',
+  });
 
   const handleButtonClick = (variant: keyof typeof alertVariants) => {
     const newAlert = (
@@ -83,6 +87,12 @@ export default function Playground() {
 
   const handleRadioButtonClick = (name: string) => () => {
     setSelectedRadio(name);
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log('Form submitted with data:', formData);
+    // Here you would typically send the data to a server
   };
 
   return (
@@ -263,44 +273,112 @@ export default function Playground() {
 
         <section className="space-y-4 mb-12">
           <h2 className="text-2xl font-semibold">Radio Button Card Component</h2>
-          <div className="flex flex-col gap-4">
-            <RadioButtonCard
-              title="Label"
-              description="Gravida tempor faucibus"
-              icon={<SaveIcon />}
-              selected={selectedRadio === 'radio1'}
-              onClick={handleRadioButtonClick('radio1')}
-            />
-            <RadioButtonCard
-              title="Label"
-              description="Gravida tempor faucibus"
-              icon={<SaveIcon />}
-              selected={selectedRadio === 'radio2'}
-              onClick={handleRadioButtonClick('radio2')}
-            />
-            <RadioButtonCard
-              title="Label"
-              description="Gravida tempor faucibus"
-              icon={<SaveIcon />}
-              selected={selectedRadio === 'radio3'}
-              onClick={handleRadioButtonClick('radio3')}
-            />
-            <RadioButtonCard
-              title="Label"
-              description="Gravida tempor faucibus"
-              icon={<SaveIcon />}
-              selected={selectedRadio === 'radio4'}
-              onClick={handleRadioButtonClick('radio4')}
-            />
-            <RadioButtonCard
-              title="Label"
-              description="Gravida tempor faucibus ipsum tristique aliquam amet sed ultrices bibendum."
-              pillText="$222"
-              orientation="vertical"
-              selected={selectedRadio === 'radio5'}
-              onClick={handleRadioButtonClick('radio5')}
-            />
-          </div>
+          <RadioGroup value={selectedRadio || ''} onValueChange={setSelectedRadio}>
+            <RadioGroupItem value="radio1" id="radio1">
+              <div className="flex-shrink-0">
+                <SaveIcon className="w-6 h-6" />
+              </div>
+              <div className="flex flex-col justify-start items-start flex-grow">
+                <RadioGroupLabel htmlFor="radio1">Label</RadioGroupLabel>
+                <RadioGroupDescription>Gravida tempor faucibus</RadioGroupDescription>
+              </div>
+            </RadioGroupItem>
+            <RadioGroupItem value="radio2" id="radio2">
+              <div className="flex-shrink-0">
+                <SaveIcon className="w-6 h-6" />
+              </div>
+              <div className="flex flex-col justify-start items-start flex-grow">
+                <RadioGroupLabel htmlFor="radio2">Label</RadioGroupLabel>
+                <RadioGroupDescription>Gravida tempor faucibus</RadioGroupDescription>
+              </div>
+            </RadioGroupItem>
+            <RadioGroupItem value="radio3" id="radio3">
+              <div className="flex-shrink-0">
+                <SaveIcon className="w-6 h-6" />
+              </div>
+              <div className="flex flex-col justify-start items-start flex-grow">
+                <RadioGroupLabel htmlFor="radio3">Label</RadioGroupLabel>
+                <RadioGroupDescription>Gravida tempor faucibus</RadioGroupDescription>
+              </div>
+            </RadioGroupItem>
+            <RadioGroupItem value="radio4" id="radio4">
+              <div className="flex-shrink-0">
+                <SaveIcon className="w-6 h-6" />
+              </div>
+              <div className="flex flex-col justify-start items-start flex-grow">
+                <RadioGroupLabel htmlFor="radio4">Label</RadioGroupLabel>
+                <RadioGroupDescription>Gravida tempor faucibus</RadioGroupDescription>
+              </div>
+            </RadioGroupItem>
+            <RadioGroupItem value="radio5" id="radio5">
+              <div className="flex flex-col justify-start items-start flex-grow">
+                <RadioGroupLabel htmlFor="radio5">Label</RadioGroupLabel>
+                <RadioGroupDescription className="mt-2">Gravida tempor faucibus ipsum tristique aliquam amet sed ultrices bibendum.</RadioGroupDescription>
+                <div className="mt-2 px-2 py-1 bg-gray-200 rounded-full text-sm">$222</div>
+              </div>
+            </RadioGroupItem>
+          </RadioGroup>
+        </section>
+
+        <section className="space-y-4 mb-12">
+          <h2 className="text-2xl font-semibold">Radio Button Card Component in a Form</h2>
+          <form onSubmit={handleSubmit} className="space-y-8">
+            <div>
+              <h3 className="text-lg font-semibold mb-2">Select a Plan</h3>
+              <RadioGroup 
+                value={formData.plan} 
+                onValueChange={(value) => setFormData(prev => ({ ...prev, plan: value }))}
+              >
+                <RadioGroupItem value="basic" id="basic">
+                  <div className="flex-shrink-0">
+                    <SaveIcon className="w-6 h-6" />
+                  </div>
+                  <div className="flex flex-col justify-start items-start flex-grow">
+                    <RadioGroupLabel htmlFor="basic">Basic Plan</RadioGroupLabel>
+                    <RadioGroupDescription>$9.99/month - Good for starters</RadioGroupDescription>
+                  </div>
+                </RadioGroupItem>
+                <RadioGroupItem value="pro" id="pro">
+                  <div className="flex-shrink-0">
+                    <SaveIcon className="w-6 h-6" />
+                  </div>
+                  <div className="flex flex-col justify-start items-start flex-grow">
+                    <RadioGroupLabel htmlFor="pro">Pro Plan</RadioGroupLabel>
+                    <RadioGroupDescription>$19.99/month - For power users</RadioGroupDescription>
+                  </div>
+                </RadioGroupItem>
+                <RadioGroupItem value="enterprise" id="enterprise">
+                  <div className="flex-shrink-0">
+                    <SaveIcon className="w-6 h-6" />
+                  </div>
+                  <div className="flex flex-col justify-start items-start flex-grow">
+                    <RadioGroupLabel htmlFor="enterprise">Enterprise Plan</RadioGroupLabel>
+                    <RadioGroupDescription>$49.99/month - Full featured for large teams</RadioGroupDescription>
+                  </div>
+                </RadioGroupItem>
+              </RadioGroup>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold mb-2">Payment Method</h3>
+              <RadioGroup 
+                value={formData.paymentMethod} 
+                onValueChange={(value) => setFormData(prev => ({ ...prev, paymentMethod: value }))}
+              >
+                <RadioGroupItem value="credit" id="credit">
+                  <RadioGroupLabel htmlFor="credit">Credit Card</RadioGroupLabel>
+                </RadioGroupItem>
+                <RadioGroupItem value="paypal" id="paypal">
+                  <RadioGroupLabel htmlFor="paypal">PayPal</RadioGroupLabel>
+                </RadioGroupItem>
+                <RadioGroupItem value="bank" id="bank">
+                  <RadioGroupLabel htmlFor="bank">Bank Transfer</RadioGroupLabel>
+                </RadioGroupItem>
+              </RadioGroup>
+            </div>
+
+            <Button type="submit">Submit Form</Button>
+          </form>
         </section>
 
         <Dialog isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} variant={modalVariant}>
