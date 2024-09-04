@@ -81,8 +81,8 @@ export default function Playground() {
     setIsModalOpen(true);
   };
 
-  const handleToggleChange = (name: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-    setToggleStates(prev => ({ ...prev, [name]: event.target.checked }));
+  const handleToggleChange = (name: string) => (checked: boolean) => {
+    setToggleStates(prev => ({ ...prev, [name]: checked }));
   };
 
   const handleRadioButtonClick = (name: string) => () => {
@@ -230,14 +230,14 @@ export default function Playground() {
             <div className="flex items-center space-x-2">
               <Toggle
                 checked={toggleStates.toggle1}
-                onChange={(e) => handleToggleChange('toggle1')(e)}
+                onChange={(checked) => handleToggleChange('toggle1')(checked)}
               />
               <Label htmlFor="toggle1">Default Toggle</Label>
             </div>
             <div className="flex items-center space-x-2">
               <Toggle
                 checked={toggleStates.toggle2}
-                onChange={(e) => handleToggleChange('toggle2')(e)}
+                onChange={(checked) => handleToggleChange('toggle2')(checked)}
                 activeColor="#4CAF50"
                 inactiveColor="#FFA000"
                 toggleColor="#2196F3"
@@ -248,7 +248,7 @@ export default function Playground() {
               <Toggle
                 disabled
                 checked={toggleStates.toggle3}
-                onChange={(e) => handleToggleChange('toggle3')(e)}
+                onChange={(checked) => handleToggleChange('toggle3')(checked)}
               />
               <Label htmlFor="toggle3">Disabled Unchecked</Label>
             </div>
@@ -256,7 +256,7 @@ export default function Playground() {
               <Toggle
                 disabled
                 checked={toggleStates.toggle4}
-                onChange={(e) => handleToggleChange('toggle4')(e)}
+                onChange={(checked) => handleToggleChange('toggle4')(checked)}
               />
               <Label htmlFor="toggle4">Disabled Checked</Label>
             </div>
@@ -265,7 +265,7 @@ export default function Playground() {
               <Toggle
                 id="toggle5"
                 checked={toggleStates.toggle5}
-                onChange={(e) => handleToggleChange('toggle5')(e)}
+                onChange={(checked) => handleToggleChange('toggle5')(checked)}
               />
             </div>
           </div>

@@ -1,10 +1,11 @@
 import React, { forwardRef } from "react";
 import { cn } from "@/lib/utils";
 
-export interface ToggleProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface ToggleProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
   activeColor?: string;
   inactiveColor?: string;
   toggleColor?: string;
+  onChange?: (checked: boolean) => void;
 }
 
 const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
@@ -15,10 +16,20 @@ const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
     activeColor = "#FF90E8", 
     inactiveColor = "white", 
     toggleColor = "black",
+    onChange,
     ...props 
   }, ref) => {
+    const handleToggle = () => {
+      if (!disabled && onChange) {
+        onChange(!checked);
+      }
+    };
+
     return (
-      <div className={cn("inline-flex items-center", className, disabled ? "opacity-30 cursor-not-allowed" : "cursor-pointer")}>
+      <div 
+        className={cn("inline-flex items-center", className, disabled ? "opacity-30 cursor-not-allowed" : "cursor-pointer")}
+        onClick={handleToggle}
+      >
         <div 
           className="relative rounded-full transition-colors duration-300 ease-in-out border border-black flex-shrink-0 h-6 w-[42px]"
           style={{
@@ -41,6 +52,7 @@ const Toggle = forwardRef<HTMLInputElement, ToggleProps>(
           disabled={disabled}
           checked={checked}
           ref={ref}
+          onChange={() => {}} // Add an empty onChange to suppress React warning
           {...props}
         />
       </div>
