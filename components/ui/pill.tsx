@@ -1,52 +1,52 @@
 import React from "react";
-import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
-const pillVariants = cva(
-  "flex flex-row justify-center items-center gap-2 border border-solid box-border transition-all duration-200",
-  {
-    variants: {
-      size: {
-        regular: "w-[91px] h-9 px-2.5 py-1.5 rounded-[160px] text-sm leading-[130%]",
-        small: "h-6 px-1.5 py-0.5 rounded text-xs leading-[120%]",
-      },
-    },
-    defaultVariants: {
-      size: "regular",
-    },
-  }
-);
-
-interface PillProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof pillVariants> {
-  hoverEffect?: boolean;
+interface PillProps extends React.HTMLAttributes<HTMLDivElement> {
+  variant?: 'rounded' | 'small';
+  children: React.ReactNode;
 }
 
-const Pill = React.forwardRef<HTMLDivElement, PillProps>(
-  ({ className, size, children, hoverEffect = false, ...props }, ref) => {
-    return (
-      <div
-        className={cn(pillVariants({ size }), className)}
-        ref={ref}
-        {...props}
-      >
-        {children}
-      </div>
-    );
-  }
-);
+export const Pill: React.FC<PillProps> = ({ variant = 'rounded', children, className, ...props }) => {
+  return (
+    <div
+      className={cn(
+        "flex flex-row justify-center items-center gap-2 border border-black border-solid bg-white",
+        variant === 'rounded' 
+          ? "h-9 px-2.5 py-1.5 rounded-[160px]" 
+          : "h-6 px-1 rounded inline-flex items-center", // Added px-1 and inline-flex items-center
+        "hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-[2px] hover:-translate-y-[2px] transition-all duration-200 ease-in-out",
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+};
 
-Pill.displayName = "Pill";
-
-const PillContent = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(
-  ({ className, children, ...props }, ref) => (
-    <p ref={ref} className={cn("font-mabry-pro font-[400] text-center whitespace-nowrap", className)} {...props}>
+export const PillContent: React.FC<React.HTMLAttributes<HTMLParagraphElement> & { variant?: 'rounded' | 'small' }> = 
+  ({ children, className, variant = 'rounded', ...props }) => {
+  return (
+    <p
+      className={cn(
+        "flex items-center justify-center font-mabry-pro font-[400] text-center", // Added items-center
+        variant === 'rounded' 
+          ? "text-sm leading-[130%]" 
+          : "text-xs leading-[120%]",
+        className
+      )}
+      {...props}
+    >
       {children}
     </p>
-  )
-);
+  );
+};
 
-PillContent.displayName = "PillContent";
-
-export { Pill, PillContent, pillVariants };
+export const PillIcon: React.FC<React.ImgHTMLAttributes<HTMLImageElement>> = ({ className, ...props }) => {
+  return (
+    <img
+      className={cn("w-3 h-3", className)}
+      {...props}
+    />
+  );
+};

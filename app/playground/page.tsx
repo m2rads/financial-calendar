@@ -163,24 +163,25 @@ export default function Playground() {
         <section className="space-y-4 mb-12">
           <h2 className="text-2xl font-semibold">Pill Component</h2>
           <div className="flex flex-wrap gap-4">
-            <Pill className="bg-black text-white border-black hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-[2px] hover:-translate-y-[2px]">
-              <PillContent>Dismiss</PillContent>
+            <Pill variant="rounded" className="bg-black text-white border-black hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-[2px] hover:-translate-y-[2px]">
+              <PillContent variant="rounded">Dismiss</PillContent>
               <OutlineX className="w-3 h-3" />
             </Pill>
-            <Pill className="bg-blue-500 text-white border-blue-500 hover:shadow-[4px_4px_0px_0px_rgba(59,130,246,1)] hover:-translate-x-[2px] hover:-translate-y-[2px]">
-              <PillContent>Custom</PillContent>
+            <Pill variant="small" className="bg-black text-white border-black hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-[2px] hover:-translate-y-[2px] w-[68px]">
+              <PillContent variant="small">Dismiss</PillContent>
+              <OutlineX className="w-3 h-3" />
             </Pill>
-            <Pill className="bg-black text-white border-black hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-[2px] hover:-translate-y-[2px]">
-              <PillContent>Small</PillContent>
+            <Pill variant="rounded" className="bg-blue-500 text-white border-blue-500 hover:shadow-[4px_4px_0px_0px_rgba(59,130,246,1)] hover:-translate-x-[2px] hover:-translate-y-[2px]">
+              <PillContent variant="rounded">Custom</PillContent>
             </Pill>
-            <Pill className="bg-green-500 text-white border-green-500 hover:shadow-[4px_4px_0px_0px_rgba(34,197,94,1)] hover:-translate-x-[2px] hover:-translate-y-[2px]">
-              <PillContent>Green</PillContent>
+            <Pill variant="small" className="bg-green-500 text-white border-green-500 hover:shadow-[4px_4px_0px_0px_rgba(34,197,94,1)] hover:-translate-x-[2px] hover:-translate-y-[2px]">
+              <PillContent variant="small">Small</PillContent>
             </Pill>
-            <Pill className="bg-purple-500 text-white border-purple-500">
-              <PillContent>Longer Small Pill</PillContent>
+            <Pill variant="rounded" className="bg-purple-500 text-white border-purple-500">
+              <PillContent variant="rounded">Longer Small Pill</PillContent>
             </Pill>
-            <Pill className="bg-orange-500 text-white border-orange-500">
-              <PillContent>XS</PillContent>
+            <Pill variant="small" className="bg-orange-500 text-white border-orange-500">
+              <PillContent variant="small">XS</PillContent>
             </Pill>
           </div>
         </section>
