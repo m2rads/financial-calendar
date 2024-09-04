@@ -13,7 +13,7 @@ import {
   DialogFooter,
   DialogClose,
 } from '@/components/ui/dialog';
-import { Pill, PillContent } from '@/components/ui/pill';
+import { Pill, PillContent, PillIcon } from '@/components/ui/pill';
 import { OutlineX } from "@/components/icons";
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
@@ -162,23 +162,23 @@ export default function Playground() {
 
         <section className="space-y-4 mb-12">
           <h2 className="text-2xl font-semibold">Pill Component</h2>
-          <div className="flex flex-wrap gap-4">
-            <Pill variant="rounded" className="bg-black text-white border-black hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-[2px] hover:-translate-y-[2px]">
+          <div className="flex flex-wrap gap-4 items-center">
+            <Pill variant="rounded" className="bg-black text-white border-black">
               <PillContent variant="rounded">Dismiss</PillContent>
               <OutlineX className="w-3 h-3" />
             </Pill>
-            <Pill variant="small" className="bg-black text-white border-black hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-[2px] hover:-translate-y-[2px] w-[68px]">
+            <Pill variant="small" className="bg-black text-white border-black w-[68px]">
               <PillContent variant="small">Dismiss</PillContent>
               <OutlineX className="w-3 h-3" />
             </Pill>
-            <Pill variant="rounded" className="bg-blue-500 text-white border-blue-500 hover:shadow-[4px_4px_0px_0px_rgba(59,130,246,1)] hover:-translate-x-[2px] hover:-translate-y-[2px]">
+            <Pill variant="rounded" className="bg-blue-500 text-white border-blue-500">
               <PillContent variant="rounded">Custom</PillContent>
             </Pill>
-            <Pill variant="small" className="bg-green-500 text-white border-green-500 hover:shadow-[4px_4px_0px_0px_rgba(34,197,94,1)] hover:-translate-x-[2px] hover:-translate-y-[2px]">
+            <Pill variant="small" className="bg-green-500 text-white border-green-500">
               <PillContent variant="small">Small</PillContent>
             </Pill>
             <Pill variant="rounded" className="bg-purple-500 text-white border-purple-500">
-              <PillContent variant="rounded">Longer Small Pill</PillContent>
+              <PillContent variant="rounded">Longer Pill</PillContent>
             </Pill>
             <Pill variant="small" className="bg-orange-500 text-white border-orange-500">
               <PillContent variant="small">XS</PillContent>

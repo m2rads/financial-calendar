@@ -10,10 +10,10 @@ export const Pill: React.FC<PillProps> = ({ variant = 'rounded', children, class
   return (
     <div
       className={cn(
-        "flex flex-row justify-center items-center gap-2 border border-black border-solid bg-white",
+        "inline-flex flex-row justify-center items-center gap-2 border border-black border-solid bg-white",
         variant === 'rounded' 
           ? "h-9 px-2.5 py-1.5 rounded-[160px]" 
-          : "h-6 px-1 rounded inline-flex items-center", // Added px-1 and inline-flex items-center
+          : "h-6 px-1.5 rounded",
         "hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-x-[2px] hover:-translate-y-[2px] transition-all duration-200 ease-in-out",
         className
       )}
@@ -29,7 +29,7 @@ export const PillContent: React.FC<React.HTMLAttributes<HTMLParagraphElement> & 
   return (
     <p
       className={cn(
-        "flex items-center justify-center font-mabry-pro font-[400] text-center", // Added items-center
+        "flex items-center justify-center font-mabry-pro font-[400] text-center",
         variant === 'rounded' 
           ? "text-sm leading-[130%]" 
           : "text-xs leading-[120%]",
@@ -42,9 +42,9 @@ export const PillContent: React.FC<React.HTMLAttributes<HTMLParagraphElement> & 
   );
 };
 
-export const PillIcon: React.FC<React.ImgHTMLAttributes<HTMLImageElement>> = ({ className, ...props }) => {
+export const PillIcon: React.FC<React.SVGAttributes<SVGElement>> = ({ className, ...props }) => {
   return (
-    <img
+    <svg
       className={cn("w-3 h-3", className)}
       {...props}
     />
