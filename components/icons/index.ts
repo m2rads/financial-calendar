@@ -7,4 +7,6 @@ export { default as SearchIcon } from './SearchIcon';
 export { default as EyeFill } from './EyeFill';
 export { default as OutlineX } from './OutlineX';
 export { default as Check2 } from './Check2';
+import Calendar2Fill from './Calendar2Fill';
+
 // Add more icon exports here as you create them
