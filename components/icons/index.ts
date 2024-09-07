@@ -11,5 +11,6 @@ export { default as Calendar2Fill } from './Calendar2Fill';
 export { default as OutlineChevronLeft } from './OutlineChevronLeft';
 export { default as OutlineChevronRight } from './OutlineChevronRight';
 export { default as Calendar2PlusFill } from './Calendar2PlusFill';
+export { default as OutlineChevronDown } from './OutlineChevronDown';
 
 // Add more icon exports here as you create them
