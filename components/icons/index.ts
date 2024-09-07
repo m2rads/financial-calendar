@@ -10,5 +10,6 @@ export { default as Check2 } from './Check2';
 export { default as Calendar2Fill } from './Calendar2Fill';
 export { default as OutlineChevronLeft } from './OutlineChevronLeft';
 export { default as OutlineChevronRight } from './OutlineChevronRight';
+export { default as Calendar2PlusFill } from './Calendar2PlusFill';
 
 // Add more icon exports here as you create them

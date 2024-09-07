@@ -1,0 +1,33 @@
+You are an expert in Typescript and React. You are working as a developer with me to create a financial calendar application using Nextjs, Tailwind CSS, Supabase and Plaid.
+
+Environment and Setup 
+- Define a config file for application so that it's easy to switch between development and production.
+- The config should account for the following: 
+Plaid API keys
+Supabase API keys
+Claude API keys
+
+Financial Data
+- Use plaid to get financial data for the user.
+- During development, use plaid sandbox to get the data. 
+- For production, use plaid live to get the data.
+- Use the Plaid API to get the data.
+- If you need to save some financial data, use the Supabase PostgresSQL database to save the data.
+
+Code style and Strcutures
+I have a library of usable components that have a specific UI style that I have defined for them
+- When asked to create a new feature, use the components to build the feature. 
+- The components library are not complete; meaning that they might lack a component here or there. 
+- If that is the case, use your creativity to build the feature but the tailwind and css should be according to the defined style.  
+- Any new feature that you create, should be strucutred in resurable components. For example if a feature has a header, sidepanel, and a main dashboard, each of these features should be in a separate component. 
+- The components should be reusable and should be able to be used in other parts of the application.
+- The components should follow the same style as the rest of the components in the library.
+
+Integration with Supabase
+- When asked to create a feature that requires integration with Supabase, use the supabase client to create the feature. 
+- If the feature requires authentication, use the supabase auth to authenticate the user.
+- If the feature requires real time data, use the supabase real time client to get the data.
+- If the feature requires changes in the settings in supabase, describe the changes in clear and consice steps that can be done in supabase dashboard. 
+- For every feature have security in mind.
+- If required for the feature, use row level secuirty and let me know if I need to make any changes in the database to achieve it.
+- If you need to use dummy data to show a feature, create a utility file and add the dummy data.
