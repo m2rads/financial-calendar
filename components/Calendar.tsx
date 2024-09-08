@@ -4,26 +4,32 @@ import React, { useState } from 'react';
 import { format, addDays, subDays } from 'date-fns';
 import CalendarHeader from './CalendarHeader';
 import DayView from './DayView';
+import TimeInput from './TimeInput';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose } from './ui/dialog';
 import { Label } from './ui/label';
 import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Calendar as CalendarPicker } from './ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 
 const Calendar: React.FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [selectedTime, setSelectedTime] = useState('');
+  const [eventDate, setEventDate] = useState<Date | undefined>(new Date());
+  const [startTime, setStartTime] = useState('09:00');
+  const [endTime, setEndTime] = useState('10:00');
   const [eventTitle, setEventTitle] = useState('');
   const [amount, setAmount] = useState('');
   const [currentDate, setCurrentDate] = useState(new Date());
   const [currentView, setCurrentView] = useState<'day' | 'week' | 'month' | 'year'>('day');
 
   const handleTimeClick = (hour: number) => {
-    const formattedHour = hour === 0 ? '12:00 AM' : hour < 12 ? `${hour}:00 AM` : hour === 12 ? '12:00 PM' : `${hour - 12}:00 PM`;
-    setSelectedTime(formattedHour);
+    setStartTime(format(new Date().setHours(hour, 0), 'HH:mm'));
+    setEndTime(format(new Date().setHours(hour + 1, 0), 'HH:mm'));
     setIsDialogOpen(true);
   };
 
   const handleSave = () => {
-    console.log('Saving:', { eventTitle, amount, selectedTime });
+    console.log('Saving:', { eventTitle, amount, eventDate, startTime, endTime });
     setIsDialogOpen(false);
   };
 
@@ -33,17 +39,6 @@ const Calendar: React.FC = () => {
 
   const goToNextDay = () => {
     setCurrentDate(prevDate => addDays(prevDate, 1));
-  };
-
-  const generateTimeOptions = () => {
-    const options = [];
-    for (let hour = 0; hour < 24; hour++) {
-      for (let minute = 0; minute < 60; minute += 15) {
-        const time = new Date(2023, 0, 1, hour, minute);
-        options.push(format(time, 'h:mm a'));
-      }
-    }
-    return options;
   };
 
   return (
@@ -70,44 +65,59 @@ const Calendar: React.FC = () => {
             <div className="space-y-4">
               <div>
                 <Label htmlFor="eventTitle" className="mb-1 block">Title</Label>
-                <input
+                <Input
                   id="eventTitle"
-                  type="text"
                   value={eventTitle}
-                  onChange={(e) => setEventTitle(e.target.value)}
-                  className="w-full border border-black rounded px-2 py-1"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEventTitle(e.target.value)}
+                  className="w-full"
                 />
               </div>
               <div>
                 <Label htmlFor="amount" className="mb-1 block">Amount</Label>
-                <input
+                <Input
                   id="amount"
                   type="number"
                   value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                  className="w-full border border-black rounded px-2 py-1"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setAmount(e.target.value)}
+                  className="w-full"
                 />
               </div>
               <div>
-                <Label htmlFor="time" className="mb-1 block">Time</Label>
-                <select
-                  id="time"
-                  value={selectedTime}
-                  onChange={(e) => setSelectedTime(e.target.value)}
-                  className="w-full border border-black rounded px-2 py-1"
-                >
-                  {generateTimeOptions().map((time) => (
-                    <option key={time} value={time}>
-                      {time}
-                    </option>
-                  ))}
-                </select>
+                <Label htmlFor="date" className="mb-1 block">Date</Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Input
+                      id="date"
+                      value={eventDate ? format(eventDate, 'PPP') : ''}
+                      className="w-full cursor-pointer"
+                      readOnly
+                    />
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0">
+                    <CalendarPicker
+                      mode="single"
+                      selected={eventDate}
+                      onSelect={setEventDate}
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+              <div className="flex space-x-4">
+                <div className="flex-1">
+                  <Label htmlFor="startTime" className="mb-1 block">Start Time</Label>
+                  <TimeInput value={startTime} onChange={setStartTime} />
+                </div>
+                <div className="flex-1">
+                  <Label htmlFor="endTime" className="mb-1 block">End Time</Label>
+                  <TimeInput value={endTime} onChange={setEndTime} />
+                </div>
               </div>
             </div>
           </DialogDescription>
           <DialogFooter className="mt-6 flex justify-end">
             <Button onClick={() => setIsDialogOpen(false)} variant="default">Cancel</Button>
-            <Button onClick={handleSave} textColor='white' className='bg-[rgba(220,52,30,1)]' variant="default">Save</Button>
+            <Button onClick={handleSave} className='bg-[rgba(220,52,30,1)]' textColor='white' variant="default">Save</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
