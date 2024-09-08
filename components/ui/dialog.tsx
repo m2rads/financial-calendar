@@ -18,7 +18,7 @@ const Dialog: React.FC<DialogProps> = ({ children, isOpen, onClose, variant = "h
       <div
         className={cn(
           "flex flex-col justify-start items-start gap-4 p-[30px] border border-black border-solid rounded box-border bg-white shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]",
-          variant === "horizontal" ? "w-[700px]" : "w-80"
+          variant === "horizontal" ? "max-w-[700px] w-auto" : "w-80"
         )}
       >
         {children}
