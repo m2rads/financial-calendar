@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { format, addDays, subDays } from 'date-fns';
+import { format, addDays, subDays, isSameDay, isWithinInterval, startOfDay, endOfDay } from 'date-fns';
 import CalendarHeader from './CalendarHeader';
 import DayView from './DayView';
 import TimeInput from './TimeInput';
@@ -12,6 +12,14 @@ import { Input } from './ui/input';
 import { Calendar as CalendarPicker } from './ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 
+interface Event {
+  id: string;
+  title: string;
+  amount: number;
+  startDate: Date;
+  endDate: Date;
+}
+
 const Calendar: React.FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [eventDate, setEventDate] = useState<Date | undefined>(new Date());
@@ -21,6 +29,7 @@ const Calendar: React.FC = () => {
   const [amount, setAmount] = useState('');
   const [currentDate, setCurrentDate] = useState(new Date());
   const [currentView, setCurrentView] = useState<'day' | 'week' | 'month' | 'year'>('day');
+  const [events, setEvents] = useState<Event[]>([]);
 
   const handleTimeClick = (hour: number) => {
     setStartTime(format(new Date().setHours(hour, 0), 'HH:mm'));
@@ -29,8 +38,45 @@ const Calendar: React.FC = () => {
   };
 
   const handleSave = () => {
-    console.log('Saving:', { eventTitle, amount, eventDate, startTime, endTime });
+    if (!eventDate || !startTime || !endTime) return;
+
+    const [startHour, startMinute] = startTime.split(':').map(Number);
+    const [endHour, endMinute] = endTime.split(':').map(Number);
+
+    const startDate = new Date(eventDate);
+    startDate.setHours(startHour, startMinute);
+
+    const endDate = new Date(eventDate);
+    endDate.setHours(endHour, endMinute);
+
+    // Handle events spanning to the next day
+    if (endDate < startDate) {
+      endDate.setDate(endDate.getDate() + 1);
+    }
+
+    const newEvent: Event = {
+      id: Date.now().toString(),
+      title: eventTitle,
+      amount: parseFloat(amount),
+      startDate,
+      endDate,
+    };
+
+    setEvents(prevEvents => [...prevEvents, newEvent]);
     setIsDialogOpen(false);
+    // Reset form fields
+    setEventTitle('');
+    setAmount('');
+    setStartTime('09:00');
+    setEndTime('10:00');
+  };
+
+  const getEventsForDay = (date: Date) => {
+    return events.filter(event => 
+      isSameDay(event.startDate, date) || 
+      isSameDay(event.endDate, date) ||
+      (event.startDate < startOfDay(date) && event.endDate > endOfDay(date))
+    );
   };
 
   const goToPreviousDay = () => {
@@ -52,7 +98,11 @@ const Calendar: React.FC = () => {
         setIsDialogOpen={setIsDialogOpen}
       />
 
-      <DayView handleTimeClick={handleTimeClick} />
+      <DayView 
+        handleTimeClick={handleTimeClick} 
+        currentDate={currentDate}
+        events={getEventsForDay(currentDate)}
+      />
 
       {/* Dialog */}
       <Dialog isOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
