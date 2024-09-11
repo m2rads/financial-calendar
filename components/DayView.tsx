@@ -18,15 +18,14 @@ interface DayViewProps {
 const DayView: React.FC<DayViewProps> = ({ handleTimeClick, currentDate, events }) => {
   const hours = Array.from({ length: 24 }, (_, i) => i);
 
-  const getEventForHour = (hour: number) => {
+  const getEventsForHour = (hour: number) => {
     const hourStart = new Date(currentDate);
     hourStart.setHours(hour, 0, 0, 0);
     const hourEnd = new Date(currentDate);
-    hourEnd.setHours(hour, 59, 59, 999);
+    hourEnd.setHours(hour + 1, 0, 0, 0);
 
-    return events.find(event => 
-      isWithinInterval(hourStart, { start: event.startDate, end: event.endDate }) ||
-      isWithinInterval(hourEnd, { start: event.startDate, end: event.endDate })
+    return events.filter(event => 
+      (event.startDate < hourEnd && event.endDate > hourStart)
     );
   };
 
@@ -36,15 +35,15 @@ const DayView: React.FC<DayViewProps> = ({ handleTimeClick, currentDate, events 
     const hourEnd = new Date(currentDate);
     hourEnd.setHours(hour + 1, 0, 0, 0);
 
-    const eventStart = isSameDay(event.startDate, currentDate) ? event.startDate : hourStart;
-    const eventEnd = isSameDay(event.endDate, currentDate) ? event.endDate : hourEnd;
+    const eventStart = new Date(Math.max(event.startDate.getTime(), hourStart.getTime()));
+    const eventEnd = new Date(Math.min(event.endDate.getTime(), hourEnd.getTime()));
 
-    const startPercentage = ((eventStart.getTime() - hourStart.getTime()) / (60 * 60 * 1000)) * 100;
-    const endPercentage = ((eventEnd.getTime() - hourStart.getTime()) / (60 * 60 * 1000)) * 100;
+    const startPercentage = (eventStart.getTime() - hourStart.getTime()) / (60 * 60 * 1000) * 100;
+    const heightPercentage = (eventEnd.getTime() - eventStart.getTime()) / (60 * 60 * 1000) * 100;
 
     return {
-      top: `${Math.max(0, startPercentage)}%`,
-      height: `${Math.min(100, endPercentage) - Math.max(0, startPercentage)}%`,
+      top: `${startPercentage}%`,
+      height: `${heightPercentage}%`,
       backgroundColor: 'rgba(220,52,30,0.5)',
       position: 'absolute' as const,
       left: 0,
@@ -56,21 +55,25 @@ const DayView: React.FC<DayViewProps> = ({ handleTimeClick, currentDate, events 
   return (
     <div className="mt-4">
       {hours.map((hour) => {
-        const event = getEventForHour(hour);
+        const hourEvents = getEventsForHour(hour);
         return (
-          <div key={hour} className="flex items-center border-b border-gray-200 relative">
+          <div key={hour} className="flex items-center border-b border-gray-200 relative h-12">
             <div className="w-16 text-right pr-2 text-sm text-gray-500">
               {format(new Date().setHours(hour, 0, 0, 0), 'h a')}
             </div>
             <div
-              className="flex-grow h-12 cursor-pointer hover:bg-gray-100"
+              className="flex-grow h-full cursor-pointer hover:bg-gray-100 relative"
               onClick={() => handleTimeClick(hour)}
             >
-              {event && (
-                <div style={getEventStyle(event, hour)}>
-                  <div className="p-1 text-xs">{event.title}</div>
+              {hourEvents.map((event, index) => (
+                <div key={event.id} style={getEventStyle(event, hour)}>
+                  {hour === event.startDate.getHours() && (
+                    <div className="p-1 text-xs overflow-hidden text-ellipsis whitespace-nowrap">
+                      {event.title}
+                    </div>
+                  )}
                 </div>
-              )}
+              ))}
             </div>
           </div>
         );
