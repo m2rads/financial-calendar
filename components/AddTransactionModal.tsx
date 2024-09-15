@@ -23,8 +23,6 @@ interface AddTransactionModalProps {
   setEventDate: (date: Date | undefined) => void;
   startTime: string;
   setStartTime: (time: string) => void;
-  endTime: string;
-  setEndTime: (time: string) => void;
   eventTitle: string;
   setEventTitle: (title: string) => void;
   amount: string;
@@ -39,8 +37,6 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
   setEventDate,
   startTime,
   setStartTime,
-  endTime,
-  setEndTime,
   eventTitle,
   setEventTitle,
   amount,
@@ -100,10 +96,6 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
               <div className="flex-1">
                 <Label htmlFor="startTime" className="mb-1 block">Start Time</Label>
                 <TimeInput value={startTime} onChange={setStartTime} />
-              </div>
-              <div className="flex-1">
-                <Label htmlFor="endTime" className="mb-1 block">End Time</Label>
-                <TimeInput value={endTime} onChange={setEndTime} />
               </div>
             </div>
           </div>

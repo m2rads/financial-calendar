@@ -105,8 +105,6 @@ const Calendar: React.FC = () => {
         setEventDate={setEventDate}
         startTime={startTime}
         setStartTime={setStartTime}
-        endTime={endTime}
-        setEndTime={setEndTime}
         eventTitle={eventTitle}
         setEventTitle={setEventTitle}
         amount={amount}
