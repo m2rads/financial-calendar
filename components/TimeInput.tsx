@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from './ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
+import { Input } from './ui/input';
 
 interface TimeInputProps {
   value: string;
@@ -26,9 +27,12 @@ const CustomTimePicker: React.FC<TimeInputProps> = ({ value, onChange }) => {
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
-        <Button variant="default" className="w-full text-center h-10">
-          {value || 'Select time'}
-        </Button>
+        <Input
+          type="text"
+          value={value || 'Select time'}
+          readOnly
+          className="w-full text-center h-10 cursor-pointer"
+        />
       </PopoverTrigger>
       <PopoverContent className="w-[140px] p-0" side="bottom" align="start">
         <div className="flex h-[150px]">
