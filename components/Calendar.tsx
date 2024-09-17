@@ -40,7 +40,7 @@ const Calendar: React.FC = () => {
     startDate.setHours(hours, minutes, 0, 0);
 
     const endDate = new Date(startDate);
-    endDate.setHours(endDate.getHours() + 1);
+    endDate.setMinutes(endDate.getMinutes() + 25);
 
     const newEvent: Event = {
       id: Date.now().toString(),
