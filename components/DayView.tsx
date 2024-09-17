@@ -68,8 +68,10 @@ const DayView: React.FC<DayViewProps> = ({ handleTimeClick, currentDate, events 
               {hourEvents.map((event, index) => (
                 <div key={event.id} style={getEventStyle(event, hour)}>
                   {hour === event.startDate.getHours() && (
-                    <div className="p-1 text-xs overflow-hidden text-ellipsis whitespace-nowrap">
-                      {event.title}
+                    <div className="p-1 text-xs overflow-hidden whitespace-nowrap">
+                      <span className="font-semibold">{event.title}</span>
+                      <span className="mx-1 text-gray-400">|</span>
+                      <span className="text-green-700 font-medium">${event.amount.toFixed(2)}</span>
                     </div>
                   )}
                 </div>
