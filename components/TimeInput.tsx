@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { Input } from './ui/input';
@@ -14,14 +14,32 @@ const CustomTimePicker: React.FC<TimeInputProps> = ({ value, onChange }) => {
   const [selectedMinute, setSelectedMinute] = useState('00');
   const [selectedPeriod, setSelectedPeriod] = useState('AM');
 
+  useEffect(() => {
+    if (value) {
+      const [hours, minutes] = value.split(':');
+      let hour = parseInt(hours, 10);
+      const period = hour >= 12 ? 'PM' : 'AM';
+      hour = hour % 12 || 12;
+      setSelectedHour(hour.toString().padStart(2, '0'));
+      setSelectedMinute(minutes);
+      setSelectedPeriod(period);
+    }
+  }, [value]);
+
   const hours = Array.from({ length: 12 }, (_, i) => (i + 1).toString().padStart(2, '0'));
   const minutes = Array.from({ length: 60 }, (_, i) => i.toString().padStart(2, '0'));
   const periods = ['AM', 'PM'];
 
   const handleSelect = (hour: string, minute: string, period: string) => {
-    const formattedTime = `${hour}:${minute} ${period}`;
-    onChange(formattedTime);
-    // Removed setIsOpen(false) to keep the popover open
+    const displayTime = `${hour}:${minute} ${period}`;
+    let valueHour = parseInt(hour, 10);
+    if (period === 'PM' && valueHour !== 12) valueHour += 12;
+    if (period === 'AM' && valueHour === 12) valueHour = 0;
+    const valueTime = `${valueHour.toString().padStart(2, '0')}:${minute}`;
+    onChange(valueTime);
+    setSelectedHour(hour);
+    setSelectedMinute(minute);
+    setSelectedPeriod(period);
   };
 
   return (
@@ -29,7 +47,7 @@ const CustomTimePicker: React.FC<TimeInputProps> = ({ value, onChange }) => {
       <PopoverTrigger asChild>
         <Input
           type="text"
-          value={value || 'Select time'}
+          value={`${selectedHour}:${selectedMinute} ${selectedPeriod}`}
           readOnly
           className="w-full text-center h-10 cursor-pointer"
         />
@@ -42,10 +60,7 @@ const CustomTimePicker: React.FC<TimeInputProps> = ({ value, onChange }) => {
                 key={hour}
                 variant="default"
                 className={`w-full h-6 mb-1 text-center text-xs ${selectedHour === hour ? 'bg-black text-white' : 'text-black'} hover:text-black`}
-                onClick={() => {
-                  setSelectedHour(hour);
-                  handleSelect(hour, selectedMinute, selectedPeriod);
-                }}
+                onClick={() => handleSelect(hour, selectedMinute, selectedPeriod)}
               >
                 {hour}
               </Button>
@@ -57,10 +72,7 @@ const CustomTimePicker: React.FC<TimeInputProps> = ({ value, onChange }) => {
                 key={minute}
                 variant="default"
                 className={`w-full h-6 mb-1 text-center text-xs ${selectedMinute === minute ? 'bg-black text-white' : ''} hover:text-black`}
-                onClick={() => {
-                  setSelectedMinute(minute);
-                  handleSelect(selectedHour, minute, selectedPeriod);
-                }}
+                onClick={() => handleSelect(selectedHour, minute, selectedPeriod)}
               >
                 {minute}
               </Button>
@@ -72,10 +84,7 @@ const CustomTimePicker: React.FC<TimeInputProps> = ({ value, onChange }) => {
                 key={period}
                 variant="default"
                 className={`w-full h-6 mb-1 text-center text-xs ${selectedPeriod === period ? 'bg-black text-white' : ''} hover:text-black`}
-                onClick={() => {
-                  setSelectedPeriod(period);
-                  handleSelect(selectedHour, selectedMinute, period);
-                }}
+                onClick={() => handleSelect(selectedHour, selectedMinute, period)}
               >
                 {period}
               </Button>

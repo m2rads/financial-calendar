@@ -32,21 +32,15 @@ const Calendar: React.FC = () => {
   };
 
   const handleSave = () => {
-    if (!eventDate || !startTime || !endTime) return;
+    if (!eventDate || !startTime) return;
 
-    const [startHour, startMinute] = startTime.split(':').map(Number);
-    const [endHour, endMinute] = endTime.split(':').map(Number);
+    const [hours, minutes] = startTime.split(':').map(Number);
 
     const startDate = new Date(eventDate);
-    startDate.setHours(startHour, startMinute);
+    startDate.setHours(hours, minutes, 0, 0);
 
-    const endDate = new Date(eventDate);
-    endDate.setHours(endHour, endMinute);
-
-    // Handle events spanning to the next day
-    if (endDate < startDate) {
-      endDate.setDate(endDate.getDate() + 1);
-    }
+    const endDate = new Date(startDate);
+    endDate.setHours(endDate.getHours() + 1);
 
     const newEvent: Event = {
       id: Date.now().toString(),
@@ -62,7 +56,6 @@ const Calendar: React.FC = () => {
     setEventTitle('');
     setAmount('');
     setStartTime('09:00');
-    setEndTime('10:00');
   };
 
   const getEventsForDay = (date: Date) => {
