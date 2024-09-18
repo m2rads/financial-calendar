@@ -46,9 +46,9 @@ const DialogTitle: React.FC<React.HTMLAttributes<HTMLHeadingElement>> = ({ child
 );
 
 const DialogDescription: React.FC<React.HTMLAttributes<HTMLParagraphElement>> = ({ children, className, ...props }) => (
-  <p className={cn("text-base leading-[150%] font-mabry-pro font-[400]", className)} {...props}>
+  <div className={cn("text-base leading-[150%] font-mabry-pro font-[400]", className)} {...props}>
     {children}
-  </p>
+  </div>
 );
 
 const DialogFooter: React.FC<React.HTMLAttributes<HTMLDivElement> & { variant?: "horizontal" | "vertical" }> = ({ 
