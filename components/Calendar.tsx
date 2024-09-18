@@ -24,8 +24,20 @@ const Calendar: React.FC = () => {
   const [endTime, setEndTime] = useState('10:00');
   const [eventTitle, setEventTitle] = useState('');
   const [amount, setAmount] = useState('');
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+
+  const resetModalState = () => {
+    setEventDate(new Date());
+    setStartTime('09:00');
+    setEndTime('10:00');
+    setEventTitle('');
+    setAmount('');
+    setSelectedEvent(null);
+  };
 
   const handleTimeClick = (hour: number) => {
+    resetModalState();
+    setEventDate(currentDate);
     setStartTime(format(new Date().setHours(hour, 0), 'HH:mm'));
     setEndTime(format(new Date().setHours(hour + 1, 0), 'HH:mm'));
     setIsDialogOpen(true);
@@ -42,20 +54,24 @@ const Calendar: React.FC = () => {
     const endDate = new Date(startDate);
     endDate.setMinutes(endDate.getMinutes() + 25);
 
-    const newEvent: Event = {
-      id: Date.now().toString(),
+    const updatedEvent: Event = {
+      id: selectedEvent ? selectedEvent.id : Date.now().toString(),
       title: eventTitle,
       amount: parseFloat(amount),
       startDate,
       endDate,
     };
 
-    setEvents(prevEvents => [...prevEvents, newEvent]);
+    setEvents(prevEvents => {
+      if (selectedEvent) {
+        return prevEvents.map(ev => ev.id === selectedEvent.id ? updatedEvent : ev);
+      } else {
+        return [...prevEvents, updatedEvent];
+      }
+    });
+
     setIsDialogOpen(false);
-    // Reset form fields
-    setEventTitle('');
-    setAmount('');
-    setStartTime('09:00');
+    resetModalState();
   };
 
   const getEventsForDay = (date: Date) => {
@@ -74,6 +90,15 @@ const Calendar: React.FC = () => {
     setCurrentDate(prevDate => addDays(prevDate, 1));
   };
 
+  const handleEventClick = (event: Event) => {
+    setSelectedEvent(event);
+    setEventDate(event.startDate);
+    setStartTime(format(event.startDate, 'HH:mm'));
+    setEventTitle(event.title);
+    setAmount(event.amount.toString());
+    setIsDialogOpen(true);
+  };
+
   return (
     <div className="max-w-sm mx-auto">
       <CalendarHeader
@@ -82,18 +107,25 @@ const Calendar: React.FC = () => {
         setCurrentView={setCurrentView}
         goToPreviousDay={goToPreviousDay}
         goToNextDay={goToNextDay}
-        setIsDialogOpen={setIsDialogOpen} // Add this prop
+        setIsDialogOpen={() => {
+          resetModalState();
+          setIsDialogOpen(true);
+        }}
       />
 
       <DayView 
         handleTimeClick={handleTimeClick} 
+        handleEventClick={handleEventClick}
         currentDate={currentDate}
         events={getEventsForDay(currentDate)}
       />
 
       <AddTransactionModal
         isOpen={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
+        onClose={() => {
+          setIsDialogOpen(false);
+          resetModalState();
+        }}
         eventDate={eventDate}
         setEventDate={setEventDate}
         startTime={startTime}
@@ -103,6 +135,7 @@ const Calendar: React.FC = () => {
         amount={amount}
         setAmount={setAmount}
         handleSave={handleSave}
+        isEditing={!!selectedEvent}
       />
     </div>
   );

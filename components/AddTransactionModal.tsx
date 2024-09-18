@@ -28,6 +28,7 @@ interface AddTransactionModalProps {
   amount: string;
   setAmount: (amount: string) => void;
   handleSave: () => void;
+  isEditing: boolean;
 }
 
 const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
@@ -42,12 +43,15 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
   amount,
   setAmount,
   handleSave,
+  isEditing,
 }) => {
   return (
     <Dialog isOpen={isOpen} onClose={onClose}>
       <DialogContent className="w-80 max-w-full p-4">
         <DialogHeader className="mb-4">
-          <DialogTitle className="text-xl">Add Transaction</DialogTitle>
+          <DialogTitle className="text-xl">
+            {isEditing ? 'Edit Transaction' : 'Add Transaction'}
+          </DialogTitle>
           <DialogClose onClick={onClose} />
         </DialogHeader>
         <DialogDescription>
@@ -102,7 +106,9 @@ const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
         </DialogDescription>
         <DialogFooter className="mt-6 flex justify-end">
           <Button onClick={onClose} variant="default">Cancel</Button>
-          <Button onClick={handleSave} className='bg-[rgba(220,52,30,1)]' textColor='white' variant="default">Save</Button>
+          <Button onClick={handleSave} className='bg-[rgba(220,52,30,1)]' textColor='white' variant="default">
+            {isEditing ? 'Update' : 'Save'}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

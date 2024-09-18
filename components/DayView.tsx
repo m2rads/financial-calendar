@@ -11,11 +11,12 @@ interface Event {
 
 interface DayViewProps {
   handleTimeClick: (hour: number) => void;
+  handleEventClick: (event: Event) => void;
   currentDate: Date;
   events: Event[];
 }
 
-const DayView: React.FC<DayViewProps> = ({ handleTimeClick, currentDate, events }) => {
+const DayView: React.FC<DayViewProps> = ({ handleTimeClick, handleEventClick, currentDate, events }) => {
   const hours = Array.from({ length: 24 }, (_, i) => i);
 
   const getEventsForHour = (hour: number) => {
@@ -66,7 +67,14 @@ const DayView: React.FC<DayViewProps> = ({ handleTimeClick, currentDate, events 
               onClick={() => handleTimeClick(hour)}
             >
               {hourEvents.map((event, index) => (
-                <div key={event.id} style={getEventStyle(event, hour)}>
+                <div 
+                  key={event.id} 
+                  style={getEventStyle(event, hour)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleEventClick(event);
+                  }}
+                >
                   {hour === event.startDate.getHours() && (
                     <div className="p-1 text-xs overflow-hidden whitespace-nowrap">
                       <span className="font-semibold">{event.title}</span>
