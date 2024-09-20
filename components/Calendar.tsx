@@ -108,10 +108,10 @@ const Calendar: React.FC = () => {
 
   return (
     <div className="flex h-screen bg-gray-100">
-    {/* Left Side Panel */}
-    <SidePanel selectedDate={currentDate} onDateChange={handleDateChange} />
-
-    {/* Main Content */}
+    <div className="md:block hidden">
+        <SidePanel selectedDate={currentDate} onDateChange={handleDateChange} />
+    </div>
+    
     <div className="flex-1 flex flex-col">
       <CalendarHeader
         currentDate={currentDate}
