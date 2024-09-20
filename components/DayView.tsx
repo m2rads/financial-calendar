@@ -1,5 +1,6 @@
 import React from 'react';
 import { format, isSameDay, isWithinInterval } from 'date-fns';
+import EventItem from './EventItem';
 
 interface Event {
   id: string;
@@ -66,23 +67,14 @@ const DayView: React.FC<DayViewProps> = ({ handleTimeClick, handleEventClick, cu
               className="flex-grow h-full cursor-pointer hover:bg-gray-100 relative"
               onClick={() => handleTimeClick(hour)}
             >
-              {hourEvents.map((event, index) => (
-                <div 
-                  key={event.id} 
-                  style={getEventStyle(event, hour)}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleEventClick(event);
-                  }}
-                >
-                  {hour === event.startDate.getHours() && (
-                    <div className="p-1 text-xs overflow-hidden whitespace-nowrap">
-                      <span className="font-semibold">{event.title}</span>
-                      <span className="mx-1 text-gray-400">|</span>
-                      <span className="text-green-700 font-medium">${event.amount.toFixed(2)}</span>
-                    </div>
-                  )}
-                </div>
+              {hourEvents.map((event) => (
+                <EventItem
+                  key={event.id}
+                  event={event}
+                  getEventStyle={(event) => getEventStyle(event, hour)}
+                  handleEventClick={handleEventClick}
+                  showDetails={hour === event.startDate.getHours()}
+                />
               ))}
             </div>
           </div>
