@@ -5,6 +5,7 @@ import { format, addDays, subDays, isSameDay, isWithinInterval, startOfDay, endO
 import CalendarHeader from './CalendarHeader';
 import DayView from './DayView';
 import AddTransactionModal from './AddTransactionModal';
+import SidePanel from './SidePanel';
 
 interface Event {
   id: string;
@@ -99,8 +100,19 @@ const Calendar: React.FC = () => {
     setIsDialogOpen(true);
   };
 
+  const handleDateChange = (date: Date | undefined) => {
+    if (date) {
+      setCurrentDate(date);
+    }
+  }
+
   return (
-    <div className="mx-auto">
+    <div className="flex h-screen bg-gray-100">
+    {/* Left Side Panel */}
+    <SidePanel selectedDate={currentDate} onDateChange={handleDateChange} />
+
+    {/* Main Content */}
+    <div className="flex-1 flex flex-col">
       <CalendarHeader
         currentDate={currentDate}
         currentView={currentView}
@@ -113,12 +125,14 @@ const Calendar: React.FC = () => {
         }}
       />
 
-      <DayView 
-        handleTimeClick={handleTimeClick} 
-        handleEventClick={handleEventClick}
-        currentDate={currentDate}
-        events={getEventsForDay(currentDate)}
-      />
+      <div className="flex-1 overflow-auto p-4">
+        <DayView 
+          handleTimeClick={handleTimeClick} 
+          handleEventClick={handleEventClick}
+          currentDate={currentDate}
+          events={getEventsForDay(currentDate)}
+        />
+      </div>
 
       <AddTransactionModal
         isOpen={isDialogOpen}
@@ -138,6 +152,7 @@ const Calendar: React.FC = () => {
         isEditing={!!selectedEvent}
       />
     </div>
+  </div>
   );
 };
 
