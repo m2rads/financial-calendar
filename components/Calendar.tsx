@@ -100,7 +100,7 @@ const Calendar: React.FC = () => {
   };
 
   return (
-    <div className="max-w-sm mx-auto">
+    <div className="mx-auto">
       <CalendarHeader
         currentDate={currentDate}
         currentView={currentView}

@@ -58,7 +58,7 @@ const DayView: React.FC<DayViewProps> = ({ handleTimeClick, handleEventClick, cu
       {hours.map((hour) => {
         const hourEvents = getEventsForHour(hour);
         return (
-          <div key={hour} className="flex items-center border-b border-gray-200 relative h-12">
+          <div key={hour} className="flex items-center border-b border-gray-200 relative h-24">
             <div className="w-16 text-right pr-2 text-sm text-gray-500">
               {format(new Date().setHours(hour, 0, 0, 0), 'h a')}
             </div>

@@ -42,15 +42,25 @@ const CalendarHeader: React.FC<CalendarHeaderProps> = ({
   };
 
   return (
-    <header className="sticky top-0 bg-[#FBFBF9] z-10 p-4 flex items-center justify-between mb-4">
-      <div className="flex items-center flex-grow">
-        <Button variant="default" size="icon" onClick={goToPreviousDay} className="w-8 h-8 p-0">
+    <header className="sticky top-0 bg-[#FBFBF9] z-50 p-4 flex items-center justify-between mb-4">
+      <div className="flex items-center flex-grow md:flex-grow-0 md:space-x-4">
+        <Button
+          variant="default"
+          size="icon"
+          onClick={goToPreviousDay}
+          className="w-8 h-8 p-0"
+        >
           <OutlineChevronLeft className="w-4 h-4" />
         </Button>
-        <h1 className="text-lg font-bold flex-grow text-center mx-2">
+        <h1 className="text-lg font-bold flex-grow text-center mx-2 md:mx-0 md:flex-grow-0">
           {format(currentDate, 'MMM d, yyyy')}
         </h1>
-        <Button variant="default" size="icon" onClick={goToNextDay} className="w-8 h-8 p-0">
+        <Button
+          variant="default"
+          size="icon"
+          onClick={goToNextDay}
+          className="w-8 h-8 p-0"
+        >
           <OutlineChevronRight className="w-4 h-4" />
         </Button>
       </div>
@@ -78,11 +88,11 @@ const CalendarHeader: React.FC<CalendarHeaderProps> = ({
             </div>
           )}
         </div>
-        <Button 
-          variant="default" 
-          size="icon" 
-          onClick={() => setIsDialogOpen(true)} 
-          className="w-8 h-8 p-0 ml-2"
+        <Button
+           variant="default"
+           size="icon"
+           onClick={() => setIsDialogOpen(true)}
+           className="w-8 h-8 p-0 ml-2"
         >
           <Calendar2PlusFill className="w-4 h-4" />
         </Button>
