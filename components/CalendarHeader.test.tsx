@@ -26,6 +26,7 @@ describe('CalendarHeader', () => {
     expect(screen.getByTitle('Next Day')).toBeInTheDocument();
     expect(screen.getByTitle('Go to Today')).toBeInTheDocument();
     expect(screen.getByText('Day')).toBeInTheDocument();
+    expect(screen.getByTitle('Add Event')).toBeInTheDocument();
   });
 
   it('calls goToPreviousDay when previous button is clicked', () => {
