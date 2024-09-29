@@ -51,6 +51,7 @@ const CalendarHeader: React.FC<CalendarHeaderProps> = ({
           size="icon"
           onClick={goToPreviousDay}
           className="w-8 h-8 p-0"
+          title="Previous Day"
         >
           <OutlineChevronLeft className="w-4 h-4" />
         </Button>
@@ -62,6 +63,7 @@ const CalendarHeader: React.FC<CalendarHeaderProps> = ({
           size="icon"
           onClick={goToNextDay}
           className="w-8 h-8 p-0"
+          title="Next Day"
         >
           <OutlineChevronRight className="w-4 h-4" />
         </Button>
@@ -104,6 +106,7 @@ const CalendarHeader: React.FC<CalendarHeaderProps> = ({
            size="icon"
            onClick={() => setIsDialogOpen(true)}
            className="w-8 h-8 p-0 ml-2"
+           title="Add Event"
         >
           <Calendar2PlusFill className="w-4 h-4" />
         </Button>
