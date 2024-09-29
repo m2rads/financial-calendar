@@ -106,6 +106,10 @@ const Calendar: React.FC = () => {
     }
   }
 
+  const goToToday = () => {
+    setCurrentDate(new Date());
+  };
+
   return (
     <div className="flex h-screen bg-gray-100">
     <div className="md:block hidden">
@@ -123,6 +127,7 @@ const Calendar: React.FC = () => {
           resetModalState();
           setIsDialogOpen(true);
         }}
+        goToToday={goToToday}
       />
 
       <div className="flex-1 overflow-auto p-4">
