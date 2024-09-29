@@ -11,7 +11,7 @@ describe('CalendarHeader', () => {
 
   const defaultProps = {
     currentDate: new Date('2023-05-15'),
-    currentView: 'day',
+    currentView: 'day' as const,
     setCurrentView: mockSetCurrentView,
     goToPreviousDay: mockGoToPreviousDay,
     goToNextDay: mockGoToNextDay,

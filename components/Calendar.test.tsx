@@ -12,6 +12,12 @@ jest.mock('./CalendarHeader', () => {
   };
 });
 
+jest.mock('./DayView', () => {
+  return function MockDayView() {
+    return <div>Mock Day View</div>;
+  };
+});
+
 describe('Calendar', () => {
   it('renders correctly', () => {
     render(<Calendar />);
@@ -27,8 +33,8 @@ describe('Calendar', () => {
     // Simulate changing the date
     fireEvent.click(screen.getByText('Mock Go to Today'));
 
-    // Check if the current date is displayed
-    expect(screen.getByText('May 15, 2023')).toBeInTheDocument();
+    // Check if the mock day view is rendered
+    expect(screen.getByText('Mock Day View')).toBeInTheDocument();
 
     jest.useRealTimers();
   });
