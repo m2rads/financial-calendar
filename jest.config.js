@@ -12,11 +12,6 @@ module.exports = {
     },
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
     testPathIgnorePatterns: ['/node_modules/', '/.next/'],
-    globals: {
-      'ts-jest': {
-        tsconfig: 'tsconfig.jest.json'
-      }
-    },
     transformIgnorePatterns: [
       '/node_modules/',
       '^.+\\.module\\.(css|sass|scss)$',
