@@ -22,4 +22,5 @@ jobs:
       run: npm ci
 
     - name: Run tests
-      run: npm test
+      run: |
+        npm test 2>&1 | tee >(curl -X POST -H "Authorization: Bearer NPDcOzMe6iA-fl31zmwv5" --data-binary @- http://localhost:3000/api/github/logs/5)
