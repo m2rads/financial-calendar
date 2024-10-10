@@ -66,4 +66,11 @@ describe('CalendarHeader', () => {
     fireEvent.click(screen.getByTitle('Add Event'));
     expect(mockSetIsDialogOpen).toHaveBeenCalledWith(true);
   });
+
+  it('renders Bullseye2 icon for Go to Today button', () => {
+    render(<CalendarHeader {...defaultProps} />);
+    const goToTodayButton = screen.getByTitle('Go to Today');
+    expect(goToTodayButton).toBeInTheDocument();
+    expect(goToTodayButton.querySelector('svg')).toHaveAttribute('viewBox', '0 0 24 24');
+  });
 });
