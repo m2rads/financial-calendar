@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from './ui/button';
-import { OutlineChevronLeft, OutlineChevronRight, Calendar2PlusFill, OutlineChevronDown, Calendar2Fill } from './icons';
+import { OutlineChevronLeft, OutlineChevronRight, Calendar2PlusFill, OutlineChevronDown, Bullseye2 } from './icons';
 import { format } from 'date-fns';
 
 interface CalendarHeaderProps {
@@ -74,7 +74,7 @@ const CalendarHeader: React.FC<CalendarHeaderProps> = ({
           className="w-8 h-8 p-0 ml-2"
           title="Go to Today"
         >
-          <Calendar2Fill className="w-4 h-4" />
+          <Bullseye2 className="w-4 h-4" />
         </Button>
       </div>
       <div className="flex items-center ml-4">

@@ -14,5 +14,6 @@ export { default as Calendar2PlusFill } from './Calendar2PlusFill';
 export { default as OutlineChevronDown } from './OutlineChevronDown';
 export { default as SolidMenu } from './SolidMenu';
 export { default as OutlineDotsHorizontal } from './OutlineDotsHorizontal';
+export { default as Bullseye2 } from './Bullseye2';
 
 // Add more icon exports here as you create them
